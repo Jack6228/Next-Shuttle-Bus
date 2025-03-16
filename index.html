@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="https://fonts.gstatic.com/s/i/materialiconsoutlined/departure_board/v6/24px.svg" id="favicon">
-    <meta name="description" content="Check the next departure time for the University of Edinburgh's Shuttle Bus Service">
+    <link rel="icon" href="https://fonts.gstatic.com/s/i/materialiconsoutlined/departure_board/v6/24px.svg"
+        id="favicon">
+    <meta name="description"
+        content="Check the next departure time for the University of Edinburgh's Shuttle Bus Service">
     <meta name="keywords" content="Edinburgh, University, Shuttle, Bus, Service, Schedule, Timetable, Departure, Time">
     <meta name="author" content="Jack L Smith">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +14,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-        
+
         html {
             overflow-x: hidden;
         }
@@ -43,9 +46,11 @@
             text-align: center;
             margin-top: 20px;
         }
+
         .button-group {
             margin-bottom: 20px;
         }
+
         .button-group button {
             font-family: 'Raleway', Arial, sans-serif;
             font-size: 1em;
@@ -58,14 +63,17 @@
             color: white;
             width: 45%;
         }
+
         .button-group button.active {
             background-color: #0056b3;
             transition: 0.3s;
         }
+
         .button-group button:not(.active):hover {
             color: black;
             transition: 0.3s;
         }
+
         .time-display {
             font-size: 1.5em;
             margin-top: 20px;
@@ -96,38 +104,60 @@
             margin-top: 20px;
         }
 
+        a.link {
+            color: #664;
+            text-decoration: underline;
+        }
+        a.link:hover {
+            color: #0056b3;
+            transition: 0.3s;
+        }
+        a.link-hidden {
+            color: #664;
+            text-decoration: none;
+        }
+        a.link-hidden:hover {
+            color: #0056b3;
+            transition: 0.3s;
+        }
+
         /* Decrease font sizes for mobile devices less than 768px */
         @media (max-width: 768px) {
             .container {
-            max-width: none;
-            width: 80%;
+                max-width: none;
+                width: 80%;
             }
+
             .button-group button {
-            font-size: 1em;
+                font-size: 1em;
             }
+
             .time-display {
-            font-size: 1.2em;
+                font-size: 1.2em;
             }
+
             h1 {
-            font-size: 1.5em;
+                font-size: 1.5em;
             }
+
             h2 {
-            font-size: 1.2em;
+                font-size: 1.2em;
             }
         }
-        </style>
-    </head>
-    <body>
-        <div class="container">
+    </style>
+</head>
+
+<body>
+    <div class="container">
         <h1>Edinburgh University Shuttle Bus</h1>
         <h2>When is the Next Bus?</h2>
-        </div>
-        <div class="container">
+    </div>
+    <div class="container">
         <div class="button-group">
             <button id="routeKB" class="active">To Bristo Square</button>
             <button id="routeBK">To King's Buildings</button>
         </div>
-        <br style="visibility: hidden;", id="next-bus-styling1">
+        <br style="visibility: hidden;" , id="next-bus-styling1">
         <div class="time-display" id="timeDisplayTop">Next departure in:</div>
         <div class="time-display" id="timeDisplayMiddle">--:--:--</div>
         <div class="time-display" id="timeDisplayBottom" style="margin-bottom: 0;">at --:--</div>
@@ -136,17 +166,19 @@
         <br>
         <div class="time-display" id="timeDisplayUnderneath" style="margin-top:0;"></div>
         <div class="time-display" id="timeDisplayUnderUnder"></div>
-        </div>
+    </div>
 
-        <div class="footer">
-            Current time is <span id="currentTime"></span>
-            <br>
-            Copyright &copy; <span id="currentYear"></span>
-            Jack L Smith
-            <br>
-            Not affiliated with the University of Edinburgh's Shuttle Bus Service
-            <!--Feedback &amp; bugs: <a style="color: #664;" href="www.google.com">www.google.com</a> -->
-        </div>
+    <div class="footer">
+        <a class="link" href="https://transport.ed.ac.uk/public-transport/shuttle-bus" target="_blank">Full Timetable</a>
+        <br>
+        Current time is <span id="currentTime"></span>
+        <br><br>
+        Copyright &copy; <span id="currentYear"></span>
+        <a class="link-hidden" href="https://www.linkedin.com/in/jack-l-smith/" target="_blank">Jack L Smith</a>
+        <br>
+        Not affiliated with the University of Edinburgh's Shuttle Bus Service
+        <!--Feedback &amp; bugs: <a style="color: #664;" href="www.google.com">www.google.com</a> -->
+    </div>
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
@@ -273,7 +305,7 @@
 
             return [isWeekday, isWithinRange];
         }
-        
+
         // Function to get current Edinburgh time and next departure
         function getNextDepartureTimeTime() {
             // Get current time in Edinburgh (UTC/GMT timezone)
@@ -288,7 +320,7 @@
             // and adjust the date
             // currentDateTime.setFullYear(2025, 2, 17);
 
-            console.log('Current date and time in Edinburgh:', currentDateTime.toLocaleString('en-GB', {timeZone: 'Europe/London'}));
+            console.log('Current date and time in Edinburgh:', currentDateTime.toLocaleString('en-GB', { timeZone: 'Europe/London' }));
 
             // Convert routeDates to Date objects
             const dateRanges = routeDates.map(range => ({
@@ -347,7 +379,7 @@
                     nextDepartureDate.setDate(nextDepartureDate.getDate() + 1);
                 }
                 // Get the next departure time
-                console.log('Next departure date:', nextDepartureDate.toLocaleString('en-GB', {timeZone: 'Europe/London'}));
+                console.log('Next departure date:', nextDepartureDate.toLocaleString('en-GB', { timeZone: 'Europe/London' }));
 
                 // Return the next departure date and time
                 return {
@@ -357,13 +389,13 @@
                         hour: '2-digit',
                         minute: '2-digit'
                     }),
-                    timeRemaining: nextDepartureDate.toLocaleDateString('en-GB', {timeZone: 'Europe/London'}),
+                    timeRemaining: nextDepartureDate.toLocaleDateString('en-GB', { timeZone: 'Europe/London' }),
                     nextDepartureDate: nextDepartureDate.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
                 };
             }
 
             // Calculate time remaining
-            console.log(`Next departure time: ${nextDepartureTime.toLocaleString('en-GB', {timeZone: 'Europe/London'})}`);
+            console.log(`Next departure time: ${nextDepartureTime.toLocaleString('en-GB', { timeZone: 'Europe/London' })}`);
             const timeDiffMs = nextDepartureTime - currentDateTime;
             const hoursRemaining = Math.floor(timeDiffMs / (1000 * 60 * 60));
             const minutesRemaining = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
@@ -388,12 +420,12 @@
                     minute: '2-digit'
                 }),
                 timeRemaining: `${hoursRemaining}h ${minutesRemaining}m ${secondsRemaining}s`,
-                nextDepartureDate: nextDepartureTime.toLocaleDateString('en-GB', {timeZone: 'Europe/London'}),
+                nextDepartureDate: nextDepartureTime.toLocaleDateString('en-GB', { timeZone: 'Europe/London' }),
                 // Also return the next two departure times on this date
                 futureDepartures: futureDepartures
             };
         }
-    
+
         function updateTimeDisplay() {
             // Get the result
             const result = getNextDepartureTimeTime();
@@ -456,4 +488,5 @@
         setInterval(updateTimeDisplay, 1000);
     </script>
 </body>
+
 </html>
