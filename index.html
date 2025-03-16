@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://fonts.gstatic.com/s/i/materialiconsoutlined/departure_board/v6/24px.svg" id="favicon">
+    <meta name="description" content="Check the next departure time for the University of Edinburgh's Shuttle Bus Service">
+    <meta name="keywords" content="Edinburgh, University, Shuttle, Bus, Service, Schedule, Timetable, Departure, Time">
+    <meta name="author" content="Jack L Smith">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When is the Next Shuttle?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            align-items: center;
+            position: relative;
+            justify-content: center;
+            background-color: lightblue;
+            background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='blue' fill-opacity='0.15'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .container {
+            background: #fff;
+            background: whitesmoke;
+            padding: 20px;
+            border: 1.5px solid #0056b3;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group {
+            margin-bottom: 20px;
+        }
+        .button-group button {
+            font-family: 'Raleway', Arial, sans-serif;
+            font-size: 1em;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: grey;
+            color: white;
+            width: 45%;
+        }
+        .button-group button.active {
+            background-color: #0056b3;
+            transition: 0.3s;
+        }
+        .button-group button:not(.active):hover {
+            color: black;
+            transition: 0.3s;
+        }
+        .time-display {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-family: 'Raleway', Arial, sans-serif;
+            text-align: center;
+            font-size: 2em;
+            margin: 0;
+        }
+
+        h2 {
+            font-family: 'Raleway', Arial, sans-serif;
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 0;
+        }
+
+        .footer {
+            position: relative;
+            font-size: 0.8em;
+            color: #664;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        /* Decrease font sizes for mobile devices less than 768px */
+        @media (max-width: 768px) {
+            .container {
+            max-width: none;
+            width: 80%;
+            }
+            .button-group button {
+            font-size: 1em;
+            }
+            .time-display {
+            font-size: 1.2em;
+            }
+            h1 {
+            font-size: 1.5em;
+            }
+            h2 {
+            font-size: 1.2em;
+            }
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <h1>Edinburgh University Shuttle Bus</h1>
+        <h2>When is the Next Bus?</h2>
+        </div>
+        <div class="container">
+        <div class="button-group">
+            <button id="routeKB" class="active">To Bristo Square</button>
+            <button id="routeBK">To King's Buildings</button>
+        </div>
+        <br style="visibility: hidden;", id="next-bus-styling1">
+        <div class="time-display" id="timeDisplayTop">Next departure in:</div>
+        <div class="time-display" id="timeDisplayMiddle">--:--:--</div>
+        <div class="time-display" id="timeDisplayBottom" style="margin-bottom: 0;">at --:--</div>
+        <br>
+        <hr style="width: 20%; padding: 0; visibility: hidden;" id="next-bus-styling2">
+        <br>
+        <div class="time-display" id="timeDisplayUnderneath" style="margin-top:0;"></div>
+        <div class="time-display" id="timeDisplayUnderUnder"></div>
+        </div>
+
+        <div class="footer">
+            Current time is <span id="currentTime"></span>
+            <br>
+            Copyright &copy; <span id="currentYear"></span>
+            Jack L Smith
+            <br>
+            Not affiliated with the University of Edinburgh's Shuttle Bus Service
+            <!--Feedback &amp; bugs: <a style="color: #664;" href="www.google.com">www.google.com</a> -->
+        </div>
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+
+    <script>
+        function updateCurrentTime() {
+            const now = new Date().toLocaleString('en-GB', {
+                timeZone: 'Europe/London',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = now;
+        }
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+
+        const routeBKTimes = [
+            { departure: "08:18", arrival: "08:32" },
+            { departure: "08:38", arrival: "08:52" },
+            { departure: "09:08", arrival: "09:22" },
+            { departure: "09:33", arrival: "09:47" },
+            { departure: "09:53", arrival: "10:07" },
+            { departure: "10:13", arrival: "10:27" },
+            { departure: "10:33", arrival: "10:47" },
+            { departure: "10:53", arrival: "11:07" },
+            { departure: "11:13", arrival: "11:27" },
+            { departure: "11:33", arrival: "11:47" },
+            { departure: "11:53", arrival: "12:07" },
+            { departure: "12:13", arrival: "12:27" },
+            { departure: "12:33", arrival: "12:47" },
+            { departure: "12:53", arrival: "13:07" },
+            { departure: "13:13", arrival: "13:27" },
+            { departure: "13:33", arrival: "13:47" },
+            { departure: "13:53", arrival: "14:07" },
+            { departure: "14:13", arrival: "14:27" },
+            { departure: "14:33", arrival: "14:47" },
+            { departure: "14:53", arrival: "15:07" },
+            { departure: "15:13", arrival: "15:27" },
+            { departure: "15:33", arrival: "15:47" },
+            { departure: "15:53", arrival: "16:11" },
+            { departure: "16:23", arrival: "16:41" },
+            { departure: "16:53", arrival: "17:11" },
+            { departure: "17:23", arrival: "17:41" },
+            { departure: "17:53", arrival: "18:11" }
+        ];
+
+        const routeKBTimes = [
+            { departure: "08:35", arrival: "08:46" },
+            { departure: "09:05", arrival: "09:16" },
+            { departure: "09:35", arrival: "09:46" },
+            { departure: "09:55", arrival: "10:06" },
+            { departure: "10:15", arrival: "10:26" },
+            { departure: "10:35", arrival: "10:46" },
+            { departure: "10:55", arrival: "11:06" },
+            { departure: "11:15", arrival: "11:26" },
+            { departure: "11:35", arrival: "11:46" },
+            { departure: "11:55", arrival: "12:06" },
+            { departure: "12:15", arrival: "12:26" },
+            { departure: "12:35", arrival: "12:46" },
+            { departure: "12:55", arrival: "13:06" },
+            { departure: "13:15", arrival: "13:26" },
+            { departure: "13:35", arrival: "13:46" },
+            { departure: "13:55", arrival: "14:06" },
+            { departure: "14:15", arrival: "14:26" },
+            { departure: "14:35", arrival: "14:46" },
+            { departure: "14:55", arrival: "15:06" },
+            { departure: "15:15", arrival: "15:26" },
+            { departure: "15:35", arrival: "15:46" },
+            { departure: "15:55", arrival: "16:10" },
+            { departure: "16:25", arrival: "16:40" },
+            { departure: "16:55", arrival: "17:10" },
+            { departure: "17:25", arrival: "17:40" },
+            { departure: "17:55", arrival: "18:10" },
+            { departure: "18:25", arrival: "18:40" }
+        ];
+
+        const routeDates = [
+            { start: "2024-09-09T00:00:00", end: "2024-12-20T23:59:59" },
+            { start: "2025-01-13T00:00:00", end: "2025-04-04T23:59:59" },
+            { start: "2025-04-21T00:00:00", end: "2025-05-23T23:59:59" }
+        ];
+
+        let currentRoute = routeKBTimes;
+        let currentDestination = 'Bristo Square';
+
+        // Add event listeners to the buttons
+        document.getElementById('routeBK').addEventListener('click', () => {
+            currentRoute = routeBKTimes;
+            currentDestination = 'King\'s Buildings';
+            updateActiveButton('routeBK');
+            updateTimeDisplay();
+        });
+        document.getElementById('routeKB').addEventListener('click', () => {
+            currentRoute = routeKBTimes;
+            currentDestination = 'Bristo Square';
+            updateActiveButton('routeKB');
+            updateTimeDisplay();
+        });
+
+        // Function to update the active button
+        function updateActiveButton(activeButtonId) {
+            document.getElementById('routeBK').classList.remove('active');
+            document.getElementById('routeKB').classList.remove('active');
+            document.getElementById(activeButtonId).classList.add('active');
+        }
+
+        // Function to get current Edinburgh time and next departure
+        function isValidDate(currentDateTime) {
+            // Convert routeDates to Date objects
+            const dateRanges = routeDates.map(range => ({
+                start: new Date(range.start),
+                end: new Date(range.end)
+            }));
+
+            // Check if current date is a weekday (Mon-Fri: 1-5)
+            const isWeekday = currentDateTime.getDay() >= 1 && currentDateTime.getDay() <= 5;
+            // Check if current date is within any valid range
+            const isWithinRange = dateRanges.some(range => {
+                const startTime = range.start.getTime();
+                const endTime = range.end.getTime();
+                const currentTime = currentDateTime.getTime();
+                return currentTime >= startTime && currentTime <= endTime;
+            });
+
+            return [isWeekday, isWithinRange];
+        }
+        
+        // Function to get current Edinburgh time and next departure
+        function getNextDepartureTimeTime() {
+            // Get current time in Edinburgh (UTC/GMT timezone)
+            const now = new Date().toLocaleString('en-US', {
+                timeZone: 'Europe/London'
+            });
+            const currentDateTime = new Date(now);
+
+            // For testing:
+            // Subtract N hours from the current time
+            // currentDateTime.setHours(currentDateTime.getHours() - 1);            
+            // and adjust the date
+            // currentDateTime.setFullYear(2025, 2, 17);
+
+            console.log('Current date and time in Edinburgh:', currentDateTime.toLocaleString('en-GB', {timeZone: 'Europe/London'}));
+
+            // Convert routeDates to Date objects
+            const dateRanges = routeDates.map(range => ({
+                start: new Date(range.start),
+                end: new Date(range.end)
+            }));
+
+            // Determine if the current date is a weekday and within shuttle service dates
+            const [isWeekday, isWithinRange] = isValidDate(currentDateTime);
+            console.log('Is weekday:', isWeekday);
+            console.log('Is within range:', isWithinRange);
+
+            // Filter to keep only departures remaining today
+            const departuresLeftToday = currentRoute.filter(time => {
+                const [hours, minutes] = time.departure.split(':');
+                const departureDateTime = new Date(currentDateTime);
+                departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                return departureDateTime > currentDateTime;
+            });
+            console.log('Departures left today:', departuresLeftToday.length);
+
+            // Get today's date portion in Edinburgh time
+            const today = new Date(currentDateTime);
+            today.setHours(0, 0, 0, 0);
+
+            // Convert departure times to Date objects for today
+            const departureTimes = currentRoute.map(time => {
+                const [hours, minutes] = time.departure.split(':');
+                const departureDateTime = new Date(today);
+                departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                return departureDateTime;
+            });
+
+            // Find next departure time
+            const nextDepartureTime = departureTimes.find(time => time > currentDateTime);
+
+            // If no more departures today, or none at all, determine when the next valid departure date is
+            if (!nextDepartureTime || (!isWeekday || !isWithinRange)) {
+                // Get the next valid weekday
+                let nextDepartureDate = new Date(today);
+                nextDepartureDate.setDate(nextDepartureDate.getDate() + 1);
+
+                // If the new date is greater than the last valid service date, return a OoS message
+                if (nextDepartureDate > dateRanges[dateRanges.length - 1].end) {
+                    console.log('No more valid dates');
+                    return {
+                        responseStatus: 'outOfService',
+                        nextDepartureTime: 'No departures soon',
+                        timeRemaining: 'No departures soon',
+                        nextDepartureDate: 'No departures soon'
+                    };
+                }
+
+                // If another future date is coming, find it
+                while (!isValidDate(nextDepartureDate)[0] || !isValidDate(nextDepartureDate)[1]) {
+                    nextDepartureDate.setDate(nextDepartureDate.getDate() + 1);
+                }
+                // Get the next departure time
+                console.log('Next departure date:', nextDepartureDate.toLocaleString('en-GB', {timeZone: 'Europe/London'}));
+
+                // Return the next departure date and time
+                return {
+                    responseStatus: 'nextDepartureDate',
+                    nextDepartureTime: departureTimes[0].toLocaleTimeString('en-GB', {
+                        timeZone: 'Europe/London',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }),
+                    timeRemaining: nextDepartureDate.toLocaleDateString('en-GB', {timeZone: 'Europe/London'}),
+                    nextDepartureDate: nextDepartureDate.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
+                };
+            }
+
+            // Calculate time remaining
+            console.log(`Next departure time: ${nextDepartureTime.toLocaleString('en-GB', {timeZone: 'Europe/London'})}`);
+            const timeDiffMs = nextDepartureTime - currentDateTime;
+            const hoursRemaining = Math.floor(timeDiffMs / (1000 * 60 * 60));
+            const minutesRemaining = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsRemaining = Math.floor((timeDiffMs % (1000 * 60)) / 1000);
+
+            const futureDepartures = departuresLeftToday.slice(1, 4).filter(time => {
+                const [hours, minutes] = time.departure.split(':');
+                const departureDateTime = new Date(currentDateTime);
+                departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                return departureDateTime > nextDepartureTime;
+            }).map(time => time.departure);
+            // Set to '-' if no more departures today
+            if (futureDepartures.length === 0) {
+                futureDepartures.push('-');
+            }
+
+            return {
+                responseStatus: 'success',
+                nextDepartureTime: nextDepartureTime.toLocaleTimeString('en-GB', {
+                    timeZone: 'Europe/London',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                timeRemaining: `${hoursRemaining}h ${minutesRemaining}m ${secondsRemaining}s`,
+                nextDepartureDate: nextDepartureTime.toLocaleDateString('en-GB', {timeZone: 'Europe/London'}),
+                // Also return the next two departure times on this date
+                futureDepartures: futureDepartures
+            };
+        }
+    
+        function updateTimeDisplay() {
+            // Get the result
+            const result = getNextDepartureTimeTime();
+            // Get the time display element
+            const timeDisplayTop = document.getElementById('timeDisplayTop');
+            const timeDisplayMiddle = document.getElementById('timeDisplayMiddle');
+            const timeDisplayBottom = document.getElementById('timeDisplayBottom');
+            const timeDisplayUnderneath = document.getElementById('timeDisplayUnderneath');
+            const timeDisplayUnderUnder = document.getElementById('timeDisplayUnderUnder');
+            const nextBusStyling1 = document.getElementById('next-bus-styling1');
+            const nextBusStyling2 = document.getElementById('next-bus-styling2');
+
+            // Get the last departure time on this date
+            const last_departure = currentRoute[currentRoute.length - 1].departure;
+
+            // Determine how to display the response
+            if (result.responseStatus === 'nextDepartureDate') {
+                nextBusStyling1.style.visibility = 'hidden';
+                nextBusStyling2.style.visibility = 'hidden';
+                timeDisplayTop.innerHTML = '<br>';
+                timeDisplayMiddle.style.fontSize = '';
+                timeDisplayMiddle.innerHTML = `Next shuttle to <b>${currentDestination}</b> is at <b>${result.nextDepartureTime}</b>`;
+                timeDisplayBottom.innerText = `on ${result.nextDepartureDate}`;
+                return;
+            }
+            else if (result.responseStatus === 'outOfService') {
+                nextBusStyling1.style.visibility = 'hidden';
+                nextBusStyling2.style.visibility = 'hidden';
+                timeDisplayTop.innerHTML = '<br>';
+                timeDisplayMiddle.innerText = 'No departures soon';
+                timeDisplayBottom.innerText = 'The shuttle is now out of service until next semester';
+                timeDisplayBottom.style.fontSize = '';
+            }
+            else {
+                nextBusStyling1.style.visibility = 'visible';
+                nextBusStyling2.style.visibility = 'visible';
+                timeDisplayTop.innerHTML = `Next departure to <b>${currentDestination}</b> in:`
+                // Display the time remaining, without the hours if it is 0
+                if (result.timeRemaining.startsWith('0h ')) {
+                    timeDisplayMiddle.innerText = result.timeRemaining.slice(3);
+                } else {
+                    timeDisplayMiddle.innerText = result.timeRemaining;
+                }
+                // Set the middle text to be bigger and bold
+                timeDisplayMiddle.style.fontSize = '3em';
+                timeDisplayMiddle.style.fontWeight = 'bold';
+                timeDisplayBottom.innerText = `at ${result.nextDepartureTime}`;
+                // And the future departures a bit smaller
+                timeDisplayUnderneath.innerText = `Later departures: ${result.futureDepartures.join(', ')}`;
+                timeDisplayUnderneath.style.fontSize = '1em';
+                // Display the last time on this date, if it is after the current time
+                timeDisplayUnderUnder.innerText = `Last departure today: ${last_departure}`;
+                timeDisplayUnderUnder.style.fontSize = '1em';
+            }
+        }
+
+        // Run the function
+        updateTimeDisplay();
+        // Update every second
+        setInterval(updateTimeDisplay, 1000);
+    </script>
+</body>
+</html>
