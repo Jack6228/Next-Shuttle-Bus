@@ -30,7 +30,7 @@
             align-items: center;
             position: relative;
             justify-content: center;
-            background-color: lightblue;
+            background-color: #add8e6;
             background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='blue' fill-opacity='0.15'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
@@ -148,6 +148,7 @@
 </head>
 
 <body>
+
     <div class="container">
         <h1>Edinburgh University Shuttle Bus</h1>
         <h2>When is the Next Bus?</h2>
@@ -178,12 +179,12 @@
         <br>
         Not affiliated with the University of Edinburgh's Shuttle Bus Service
         <!--Feedback &amp; bugs: <a style="color: #664;" href="www.google.com">www.google.com</a> -->
+        <br><br>
+        <a href="https://visitorbadge.io/status?path=https://jack6228.github.io/Next-Shuttle-Bus"><img src="https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%230056b3&labelStyle=lower" /></a>
     </div>
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-    </script>
 
-    <script>
         function updateCurrentTime() {
             const now = new Date().toLocaleString('en-GB', {
                 timeZone: 'Europe/London',
