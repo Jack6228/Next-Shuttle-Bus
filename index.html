@@ -3,151 +3,354 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="https://fonts.gstatic.com/s/i/materialiconsoutlined/departure_board/v6/24px.svg"
-        id="favicon">
-    <meta name="description"
-        content="Check the next departure time for the University of Edinburgh's Shuttle Bus Service">
+    <!-- Use a colored SVG favicon by embedding SVG as a data URI -->
+    <meta name="description" content="Check the next departure time for the University of Edinburgh's Shuttle Bus Service">
     <meta name="keywords" content="Edinburgh, University, Shuttle, Bus, Service, Schedule, Timetable, Departure, Time">
     <meta name="author" content="Jack L Smith">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>When is the Next Shuttle?</title>
+
+    <script>
+        // This script runs first to prevent a flash of the wrong theme.
+        // It checks for a saved theme in localStorage and applies it.
+        (function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-gradient-start: #e0c3fc;
+            --bg-gradient-end: #8ec5fc;
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --button-group-bg: #e5e7eb;
+            --button-active-bg: #ffffff;
+            --button-hover-bg: rgba(255, 255, 255, 0.5);
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --accent-color: #3b82f6;
+            --accent-color-dark: #2563eb;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --card-border: rgba(255, 255, 255, 0.2);
+            --footer-text: rgba(255, 255, 255, 0.9);
+            --footer-link-border: rgba(255, 255, 255, 0.5);
+            --footer-link-hover: #ffffff;
+        }
+
+        html.dark {
+            --bg-gradient-start: #24243e;
+            --bg-gradient-end: #1b1458;
+            --card-bg: rgba(30, 30, 45, 0.75);
+            --button-group-bg: #1e293b;
+            --button-active-bg: #3b82f6;
+            --button-hover-bg: rgba(51, 65, 85, 0.5);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #60a5fa;
+            --accent-color-dark: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --footer-text: rgba(226, 232, 240, 0.8);
+            --footer-link-border: rgba(226, 232, 240, 0.4);
+            --footer-link-hover: #ffffff;
+        }
+
+        /* --- BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         html {
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            font-family: 'Roboto', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-gradient-end);
+            background-image: linear-gradient(62deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f0f0f0;
-            align-items: center;
-            position: relative;
             justify-content: center;
-            background-color: #add8e6;
-            background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='blue' fill-opacity='0.15'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            min-height: 100vh;
+            padding: 1.5rem;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .container {
-            background: #fff;
-            background: whitesmoke;
-            padding: 20px;
-            border: 1.5px solid #0056b3;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .button-group {
-            margin-bottom: 20px;
-        }
-
-        .button-group button {
-            font-family: 'Raleway', Arial, sans-serif;
-            font-size: 1em;
-            padding: 10px 20px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
+        /* --- THEME TOGGLE BUTTON --- */
+        #theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            background-color: grey;
-            color: white;
-            width: 45%;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .button-group button.active {
-            background-color: #0056b3;
-            transition: 0.3s;
+        #theme-toggle:hover {
+            transform: scale(1.1);
         }
 
-        .button-group button:not(.active):hover {
-            color: black;
-            transition: 0.3s;
+        #theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
-        .time-display {
-            font-size: 1.5em;
-            margin-top: 20px;
+        #theme-toggle-dark-icon {
+            display: none;
+        }
+
+        html.dark #theme-toggle-light-icon {
+            display: none;
+        }
+
+        html.dark #theme-toggle-dark-icon {
+            display: block;
+        }
+
+
+        /* --- MAIN CONTENT STYLES --- */
+        .container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .container:first-of-type {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .container:nth-of-type(2) {
+            padding: 2.5rem;
         }
 
         h1 {
-            font-family: 'Raleway', Arial, sans-serif;
-            text-align: center;
-            font-size: 2em;
-            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
         h2 {
-            font-family: 'Raleway', Arial, sans-serif;
-            text-align: center;
-            font-size: 1.5em;
-            margin-bottom: 0;
+            font-size: 1.125rem;
+            font-weight: 400;
+            color: var(--text-secondary);
         }
 
+        .button-group {
+            display: flex;
+            background-color: var(--button-group-bg);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-group button {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            /* margin-left: 0.5rem; */
+            /* margin-right: 0.1rem; */
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            background-color: transparent;
+            color: var(--text-secondary);
+            width: 50%;
+            flex-grow: 1;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .button-group button.active {
+            background-color: var(--button-active-bg);
+            color: var(--accent-color-dark);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+        }
+
+        .button-group button:not(.active):hover {
+            background-color: var(--button-hover-bg);
+            color: var(--text-primary);
+        }
+
+        .time-display {
+            /* margin-top: 20px; */
+            transition: color 0.3s ease;
+        }
+
+        #timeDisplayTop {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        #timeDisplayMiddle {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.05em;
+            line-height: 1.1;
+        }
+
+        #timeDisplayBottom {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        #timeDisplayUnderneath,
+        #timeDisplayUnderUnder {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
+        #timeDisplayUnderneath {
+            margin-top: 2rem;
+        }
+
+        hr#next-bus-styling2,
+        br#next-bus-styling1 {
+            display: none;
+        }
+
+        /* --- FOOTER STYLES --- */
         .footer {
             position: relative;
-            font-size: 0.8em;
-            color: #664;
-            left: 0;
+            font-size: 0.875rem;
+            color: var(--footer-text);
             width: 100%;
+            max-width: 500px;
             text-align: center;
-            padding: 10px;
-            margin-top: 20px;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
         }
 
-        a.link {
-            color: #664;
-            text-decoration: underline;
-        }
-        a.link:hover {
-            color: #0056b3;
-            transition: 0.3s;
-        }
-        a.link-hidden {
-            color: #664;
+        .footer a {
+            color: var(--footer-text);
+            font-weight: 500;
             text-decoration: none;
-        }
-        a.link-hidden:hover {
-            color: #0056b3;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--footer-link-border);
         }
 
-        /* Decrease font sizes for mobile devices less than 768px */
+        .footer a.link-hidden {
+            border-bottom: none;
+        }
+
+        .footer a:hover {
+            color: var(--footer-link-hover);
+            border-bottom-color: var(--footer-link-hover);
+        }
+
+        .footer img {
+            margin-top: 1rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer img:hover {
+            opacity: 1;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            #theme-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+
             .container {
-                max-width: none;
-                width: 80%;
+                padding: 1.5rem;
+                border-radius: 12px;
             }
 
-            .button-group button {
-                font-size: 1em;
+            .container:first-of-type {
+                margin-bottom: 1rem;
+                padding: 1rem;
             }
 
-            .time-display {
-                font-size: 1.2em;
+            .container:nth-of-type(2) {
+                padding: 2rem 1.5rem;
             }
 
             h1 {
-                font-size: 1.5em;
+                font-size: 1.5rem;
             }
 
             h2 {
-                font-size: 1.2em;
+                font-size: 1rem;
+            }
+
+            .button-group button {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.5rem;
+            }
+
+            #timeDisplayMiddle {
+                font-size: 2.5rem !important;
+            }
+
+            #timeDisplayBottom {
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 
 <body>
+
+    <button id="theme-toggle" title="Toggle dark mode">
+        <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+        </svg>
+        <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+        </svg>
+    </button>
+
 
     <div class="container">
         <h1>Edinburgh University Shuttle Bus</h1>
@@ -158,19 +361,21 @@
             <button id="routeKB" class="active">To Bristo Square</button>
             <button id="routeBK">To King's Buildings</button>
         </div>
-        <br style="visibility: hidden;" , id="next-bus-styling1">
+        <!-- <br style="visibility: hidden;" , id="next-bus-styling1"> -->
         <div class="time-display" id="timeDisplayTop">Next departure in:</div>
+        <br>
         <div class="time-display" id="timeDisplayMiddle">--:--:--</div>
         <div class="time-display" id="timeDisplayBottom" style="margin-bottom: 0;">at --:--</div>
         <br>
-        <hr style="width: 20%; padding: 0; visibility: hidden;" id="next-bus-styling2">
-        <br>
+        <!-- <br style="width: 20%; padding: 0; visibility: hidden;" id="next-bus-styling2"> -->
+        <!-- <br> -->
         <div class="time-display" id="timeDisplayUnderneath" style="margin-top:0;"></div>
         <div class="time-display" id="timeDisplayUnderUnder"></div>
     </div>
 
     <div class="footer">
-        <a class="link" href="https://transport.ed.ac.uk/public-transport/shuttle-bus" target="_blank">Full Timetable</a>
+        <a class="link" href="https://transport.ed.ac.uk/public-transport/shuttle-bus" target="_blank">Full
+            Timetable</a>
         <br>
         Current time is <span id="currentTime"></span>
         <br><br>
@@ -180,9 +385,42 @@
         Not affiliated with the University of Edinburgh's Shuttle Bus Service
         <!--Feedback &amp; bugs: <a style="color: #664;" href="www.google.com">www.google.com</a> -->
         <br><br>
-        <a href="https://visitorbadge.io/status?path=https://jack6228.github.io/Next-Shuttle-Bus"><img src="https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%230056b3&labelStyle=lower" /></a>
+        <a href="https://visitorbadge.io/status?path=https://jack6228.github.io/Next-Shuttle-Bus"><img id="visitor-badge" src="https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%2300  56b3&labelStyle=lower" /></a>
     </div>
     <script>
+        // --- THEME TOGGLE SCRIPT ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const visitorBadge = document.getElementById('visitor-badge');
+
+        const lightBadgeSrc = "https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%230056b3&labelStyle=lower";
+        const darkBadgeSrc = "https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23374151&countColor=%239ca3af&labelStyle=lower";
+
+        const updateVisitorBadge = (theme) => {
+            if (theme === 'dark') {
+                visitorBadge.src = darkBadgeSrc;
+            } else {
+                visitorBadge.src = lightBadgeSrc;
+            }
+        };
+
+        // Set initial badge based on theme
+        if (document.documentElement.classList.contains('dark')) {
+            updateVisitorBadge('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+
+            let theme = 'light';
+            if (document.documentElement.classList.contains('dark')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+            updateVisitorBadge(theme);
+        });
+
+
+        // --- ORIGINAL APP SCRIPT ---
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         function updateCurrentTime() {
@@ -197,75 +435,22 @@
         setInterval(updateCurrentTime, 1000);
 
         const routeBKTimes = [
-            { departure: "08:18", arrival: "08:32" },
-            { departure: "08:38", arrival: "08:52" },
-            { departure: "09:08", arrival: "09:22" },
-            { departure: "09:33", arrival: "09:47" },
-            { departure: "09:53", arrival: "10:07" },
-            { departure: "10:13", arrival: "10:27" },
-            { departure: "10:33", arrival: "10:47" },
-            { departure: "10:53", arrival: "11:07" },
-            { departure: "11:13", arrival: "11:27" },
-            { departure: "11:33", arrival: "11:47" },
-            { departure: "11:53", arrival: "12:07" },
-            { departure: "12:13", arrival: "12:27" },
-            { departure: "12:33", arrival: "12:47" },
-            { departure: "12:53", arrival: "13:07" },
-            { departure: "13:13", arrival: "13:27" },
-            { departure: "13:33", arrival: "13:47" },
-            { departure: "13:53", arrival: "14:07" },
-            { departure: "14:13", arrival: "14:27" },
-            { departure: "14:33", arrival: "14:47" },
-            { departure: "14:53", arrival: "15:07" },
-            { departure: "15:13", arrival: "15:27" },
-            { departure: "15:33", arrival: "15:47" },
-            { departure: "15:53", arrival: "16:11" },
-            { departure: "16:23", arrival: "16:41" },
-            { departure: "16:53", arrival: "17:11" },
-            { departure: "17:23", arrival: "17:41" },
-            { departure: "17:53", arrival: "18:11" }
+            { departure: "08:18", arrival: "08:32" }, { departure: "08:38", arrival: "08:52" }, { departure: "09:08", arrival: "09:22" }, { departure: "09:33", arrival: "09:47" }, { departure: "09:53", arrival: "10:07" }, { departure: "10:13", arrival: "10:27" }, { departure: "10:33", arrival: "10:47" }, { departure: "10:53", arrival: "11:07" }, { departure: "11:13", arrival: "11:27" }, { departure: "11:33", arrival: "11:47" }, { departure: "11:53", arrival: "12:07" }, { departure: "12:13", arrival: "12:27" }, { departure: "12:33", arrival: "12:47" }, { departure: "12:53", arrival: "13:07" }, { departure: "13:13", arrival: "13:27" }, { departure: "13:33", arrival: "13:47" }, { departure: "13:53", arrival: "14:07" }, { departure: "14:13", arrival: "14:27" }, { departure: "14:33", arrival: "14:47" }, { departure: "14:53", arrival: "15:07" }, { departure: "15:13", arrival: "15:27" }, { departure: "15:33", arrival: "15:47" }, { departure: "15:53", arrival: "16:11" }, { departure: "16:23", arrival: "16:41" }, { departure: "16:53", arrival: "17:11" }, { departure: "17:23", arrival: "17:41" }, { departure: "17:53", arrival: "18:11" }
         ];
 
         const routeKBTimes = [
-            { departure: "08:35", arrival: "08:46" },
-            { departure: "09:05", arrival: "09:16" },
-            { departure: "09:35", arrival: "09:46" },
-            { departure: "09:55", arrival: "10:06" },
-            { departure: "10:15", arrival: "10:26" },
-            { departure: "10:35", arrival: "10:46" },
-            { departure: "10:55", arrival: "11:06" },
-            { departure: "11:15", arrival: "11:26" },
-            { departure: "11:35", arrival: "11:46" },
-            { departure: "11:55", arrival: "12:06" },
-            { departure: "12:15", arrival: "12:26" },
-            { departure: "12:35", arrival: "12:46" },
-            { departure: "12:55", arrival: "13:06" },
-            { departure: "13:15", arrival: "13:26" },
-            { departure: "13:35", arrival: "13:46" },
-            { departure: "13:55", arrival: "14:06" },
-            { departure: "14:15", arrival: "14:26" },
-            { departure: "14:35", arrival: "14:46" },
-            { departure: "14:55", arrival: "15:06" },
-            { departure: "15:15", arrival: "15:26" },
-            { departure: "15:35", arrival: "15:46" },
-            { departure: "15:55", arrival: "16:10" },
-            { departure: "16:25", arrival: "16:40" },
-            { departure: "16:55", arrival: "17:10" },
-            { departure: "17:25", arrival: "17:40" },
-            { departure: "17:55", arrival: "18:10" },
-            { departure: "18:25", arrival: "18:40" }
+            { departure: "08:35", arrival: "08:46" }, { departure: "09:05", arrival: "09:16" }, { departure: "09:35", arrival: "09:46" }, { departure: "09:55", arrival: "10:06" }, { departure: "10:15", arrival: "10:26" }, { departure: "10:35", arrival: "10:46" }, { departure: "10:55", arrival: "11:06" }, { departure: "11:15", arrival: "11:26" }, { departure: "11:35", arrival: "11:46" }, { departure: "11:55", arrival: "12:06" }, { departure: "12:15", arrival: "12:26" }, { departure: "12:35", arrival: "12:46" }, { departure: "12:55", arrival: "13:06" }, { departure: "13:15", arrival: "13:26" }, { departure: "13:35", arrival: "13:46" }, { departure: "13:55", arrival: "14:06" }, { departure: "14:15", arrival: "14:26" }, { departure: "14:35", arrival: "14:46" }, { departure: "14:55", arrival: "15:06" }, { departure: "15:15", arrival: "15:26" }, { departure: "15:35", arrival: "15:46" }, { departure: "15:55", arrival: "16:10" }, { departure: "16:25", arrival: "16:40" }, { departure: "16:55", arrival: "17:10" }, { departure: "17:25", arrival: "17:40" }, { departure: "17:55", arrival: "18:10" }, { departure: "18:25", arrival: "18:40" }
         ];
 
         const routeDates = [
-            { start: "2024-09-09T00:00:00", end: "2024-12-20T23:59:59" },
-            { start: "2025-01-13T00:00:00", end: "2025-04-04T23:59:59" },
-            { start: "2025-04-21T00:00:00", end: "2025-05-23T23:59:59" }
+            { start: "2025-09-08T00:00:00", end: "2025-12-19T23:59:59" }, 
+            { start: "2026-01-12T00:00:00", end: "2026-04-03T23:59:59" }, 
+            { start: "2026-04-20T00:00:00", end: "2026-05-22T23:59:59" }
         ];
 
         let currentRoute = routeKBTimes;
         let currentDestination = 'Bristo Square';
 
-        // Add event listeners to the buttons
         document.getElementById('routeBK').addEventListener('click', () => {
             currentRoute = routeBKTimes;
             currentDestination = 'King\'s Buildings';
@@ -279,213 +464,117 @@
             updateTimeDisplay();
         });
 
-        // Function to update the active button
         function updateActiveButton(activeButtonId) {
             document.getElementById('routeBK').classList.remove('active');
             document.getElementById('routeKB').classList.remove('active');
             document.getElementById(activeButtonId).classList.add('active');
         }
 
-        // Function to get current Edinburgh time and next departure
         function isValidDate(currentDateTime) {
-            // Convert routeDates to Date objects
             const dateRanges = routeDates.map(range => ({
                 start: new Date(range.start),
                 end: new Date(range.end)
             }));
-
-            // Check if current date is a weekday (Mon-Fri: 1-5)
             const isWeekday = currentDateTime.getDay() >= 1 && currentDateTime.getDay() <= 5;
-            // Check if current date is within any valid range
             const isWithinRange = dateRanges.some(range => {
                 const startTime = range.start.getTime();
                 const endTime = range.end.getTime();
                 const currentTime = currentDateTime.getTime();
                 return currentTime >= startTime && currentTime <= endTime;
             });
-
             return [isWeekday, isWithinRange];
         }
 
-        // Function to get current Edinburgh time and next departure
         function getNextDepartureTimeTime() {
-            // Get current time in Edinburgh (UTC/GMT timezone)
-            const now = new Date().toLocaleString('en-US', {
-                timeZone: 'Europe/London'
-            });
+            const now = new Date().toLocaleString('en-US', { timeZone: 'Europe/London' });
             const currentDateTime = new Date(now);
 
             // For testing:
             // Subtract N hours from the current time
-            // currentDateTime.setHours(currentDateTime.getHours() - 1);            
+            currentDateTime.setHours(currentDateTime.getHours() - 1);            
             // and adjust the date
-            // currentDateTime.setFullYear(2025, 2, 17);
+            currentDateTime.setFullYear(2025, 9, 17);
 
-            console.log('Current date and time in Edinburgh:', currentDateTime.toLocaleString('en-GB', { timeZone: 'Europe/London' }));
-
-            // Convert routeDates to Date objects
-            const dateRanges = routeDates.map(range => ({
-                start: new Date(range.start),
-                end: new Date(range.end)
-            }));
-
-            // Determine if the current date is a weekday and within shuttle service dates
+            const dateRanges = routeDates.map(range => ({ start: new Date(range.start), end: new Date(range.end) }));
             const [isWeekday, isWithinRange] = isValidDate(currentDateTime);
-            console.log('Is weekday:', isWeekday);
-            console.log('Is within range:', isWithinRange);
-
-            // Filter to keep only departures remaining today
             const departuresLeftToday = currentRoute.filter(time => {
                 const [hours, minutes] = time.departure.split(':');
                 const departureDateTime = new Date(currentDateTime);
                 departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
                 return departureDateTime > currentDateTime;
             });
-            console.log('Departures left today:', departuresLeftToday.length);
-
-            // Get today's date portion in Edinburgh time
             const today = new Date(currentDateTime);
             today.setHours(0, 0, 0, 0);
-
-            // Convert departure times to Date objects for today
             const departureTimes = currentRoute.map(time => {
                 const [hours, minutes] = time.departure.split(':');
                 const departureDateTime = new Date(today);
                 departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
                 return departureDateTime;
             });
-
-            // Find next departure time
             const nextDepartureTime = departureTimes.find(time => time > currentDateTime);
-
-            // If no more departures today, or none at all, determine when the next valid departure date is
             if (!nextDepartureTime || (!isWeekday || !isWithinRange)) {
-                // Get the next valid weekday
                 let nextDepartureDate = new Date(today);
                 nextDepartureDate.setDate(nextDepartureDate.getDate() + 1);
-
-                // If the new date is greater than the last valid service date, return a OoS message
                 if (nextDepartureDate > dateRanges[dateRanges.length - 1].end) {
-                    console.log('No more valid dates');
-                    return {
-                        responseStatus: 'outOfService',
-                        nextDepartureTime: 'No departures soon',
-                        timeRemaining: 'No departures soon',
-                        nextDepartureDate: 'No departures soon'
-                    };
+                    return { responseStatus: 'outOfService' };
                 }
-
-                // If another future date is coming, find it
                 while (!isValidDate(nextDepartureDate)[0] || !isValidDate(nextDepartureDate)[1]) {
                     nextDepartureDate.setDate(nextDepartureDate.getDate() + 1);
                 }
-                // Get the next departure time
-                console.log('Next departure date:', nextDepartureDate.toLocaleString('en-GB', { timeZone: 'Europe/London' }));
-
-                // Return the next departure date and time
                 return {
                     responseStatus: 'nextDepartureDate',
-                    nextDepartureTime: departureTimes[0].toLocaleTimeString('en-GB', {
-                        timeZone: 'Europe/London',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }),
-                    timeRemaining: nextDepartureDate.toLocaleDateString('en-GB', { timeZone: 'Europe/London' }),
+                    nextDepartureTime: departureTimes[0].toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' }),
                     nextDepartureDate: nextDepartureDate.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
                 };
             }
-
-            // Calculate time remaining
-            console.log(`Next departure time: ${nextDepartureTime.toLocaleString('en-GB', { timeZone: 'Europe/London' })}`);
             const timeDiffMs = nextDepartureTime - currentDateTime;
             const hoursRemaining = Math.floor(timeDiffMs / (1000 * 60 * 60));
             const minutesRemaining = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
             const secondsRemaining = Math.floor((timeDiffMs % (1000 * 60)) / 1000);
-
-            const futureDepartures = departuresLeftToday.slice(1, 4).filter(time => {
-                const [hours, minutes] = time.departure.split(':');
-                const departureDateTime = new Date(currentDateTime);
-                departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-                return departureDateTime > nextDepartureTime;
-            }).map(time => time.departure);
-            // Set to '-' if no more departures today
+            const futureDepartures = departuresLeftToday.slice(1, 4).map(time => time.departure);
             if (futureDepartures.length === 0) {
                 futureDepartures.push('-');
             }
-
             return {
                 responseStatus: 'success',
-                nextDepartureTime: nextDepartureTime.toLocaleTimeString('en-GB', {
-                    timeZone: 'Europe/London',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                }),
+                nextDepartureTime: nextDepartureTime.toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' }),
                 timeRemaining: `${hoursRemaining}h ${minutesRemaining}m ${secondsRemaining}s`,
-                nextDepartureDate: nextDepartureTime.toLocaleDateString('en-GB', { timeZone: 'Europe/London' }),
-                // Also return the next two departure times on this date
                 futureDepartures: futureDepartures
             };
         }
 
         function updateTimeDisplay() {
-            // Get the result
             const result = getNextDepartureTimeTime();
-            // Get the time display element
             const timeDisplayTop = document.getElementById('timeDisplayTop');
             const timeDisplayMiddle = document.getElementById('timeDisplayMiddle');
             const timeDisplayBottom = document.getElementById('timeDisplayBottom');
             const timeDisplayUnderneath = document.getElementById('timeDisplayUnderneath');
             const timeDisplayUnderUnder = document.getElementById('timeDisplayUnderUnder');
-            const nextBusStyling1 = document.getElementById('next-bus-styling1');
-            const nextBusStyling2 = document.getElementById('next-bus-styling2');
-
-            // Get the last departure time on this date
             const last_departure = currentRoute[currentRoute.length - 1].departure;
 
-            // Determine how to display the response
+            timeDisplayUnderneath.innerText = '';
+            timeDisplayUnderUnder.innerText = '';
+            timeDisplayTop.innerHTML = '';
+            timeDisplayMiddle.style.fontSize = '';
+            timeDisplayMiddle.style.fontWeight = 'normal';
+
             if (result.responseStatus === 'nextDepartureDate') {
-                nextBusStyling1.style.visibility = 'hidden';
-                nextBusStyling2.style.visibility = 'hidden';
-                timeDisplayTop.innerHTML = '<br>';
-                timeDisplayMiddle.style.fontSize = '';
                 timeDisplayMiddle.innerHTML = `Next shuttle to <b>${currentDestination}</b> is at <b>${result.nextDepartureTime}</b>`;
                 timeDisplayBottom.innerText = `on ${result.nextDepartureDate}`;
-                return;
-            }
-            else if (result.responseStatus === 'outOfService') {
-                nextBusStyling1.style.visibility = 'hidden';
-                nextBusStyling2.style.visibility = 'hidden';
-                timeDisplayTop.innerHTML = '<br>';
+            } else if (result.responseStatus === 'outOfService') {
                 timeDisplayMiddle.innerText = 'No departures soon';
                 timeDisplayBottom.innerText = 'The shuttle is now out of service until next semester';
-                timeDisplayBottom.style.fontSize = '';
-            }
-            else {
-                nextBusStyling1.style.visibility = 'visible';
-                nextBusStyling2.style.visibility = 'visible';
-                timeDisplayTop.innerHTML = `Next departure to <b>${currentDestination}</b> in:`
-                // Display the time remaining, without the hours if it is 0
-                if (result.timeRemaining.startsWith('0h ')) {
-                    timeDisplayMiddle.innerText = result.timeRemaining.slice(3);
-                } else {
-                    timeDisplayMiddle.innerText = result.timeRemaining;
-                }
-                // Set the middle text to be bigger and bold
+            } else {
+                timeDisplayTop.innerHTML = `Next departure to <b style="font-size:1.15em;">${currentDestination}</b> in:`;
+                timeDisplayMiddle.innerText = result.timeRemaining.startsWith('0h ') ? result.timeRemaining.slice(3) : result.timeRemaining;
                 timeDisplayMiddle.style.fontSize = '3em';
                 timeDisplayMiddle.style.fontWeight = 'bold';
                 timeDisplayBottom.innerText = `at ${result.nextDepartureTime}`;
-                // And the future departures a bit smaller
                 timeDisplayUnderneath.innerText = `Later departures: ${result.futureDepartures.join(', ')}`;
-                timeDisplayUnderneath.style.fontSize = '1em';
-                // Display the last time on this date, if it is after the current time
                 timeDisplayUnderUnder.innerText = `Last departure today: ${last_departure}`;
-                timeDisplayUnderUnder.style.fontSize = '1em';
             }
         }
-
-        // Run the function
         updateTimeDisplay();
-        // Update every second
         setInterval(updateTimeDisplay, 1000);
     </script>
 </body>
