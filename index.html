@@ -3,11 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- Use a colored SVG favicon by embedding SVG as a data URI -->
+    <link rel="icon" href="https://fonts.gstatic.com/s/i/materialiconsoutlined/departure_board/v6/24px.svg" id="favicon">
+    <link rel="icon" type="image/png" sizes="96x96" href="fav.png">
     <meta name="description" content="Check the next departure time for the University of Edinburgh's Shuttle Bus Service">
     <meta name="keywords" content="Edinburgh, University, Shuttle, Bus, Service, Schedule, Timetable, Departure, Time">
     <meta name="author" content="Jack L Smith">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="4o7tYkwMpDXRf1oA-fG8WzihH23llmTK_73tNOCM35s" />
     <title>When is the Next Shuttle?</title>
 
     <script>
@@ -491,9 +493,9 @@
 
             // For testing:
             // Subtract N hours from the current time
-            currentDateTime.setHours(currentDateTime.getHours() - 1);            
+            // currentDateTime.setHours(currentDateTime.getHours() - 1);            
             // and adjust the date
-            currentDateTime.setFullYear(2025, 9, 17);
+            // currentDateTime.setFullYear(2025, 9, 17);
 
             const dateRanges = routeDates.map(range => ({ start: new Date(range.start), end: new Date(range.end) }));
             const [isWeekday, isWithinRange] = isValidDate(currentDateTime);
@@ -559,7 +561,8 @@
             timeDisplayMiddle.style.fontWeight = 'normal';
 
             if (result.responseStatus === 'nextDepartureDate') {
-                timeDisplayMiddle.innerHTML = `Next shuttle to <b>${currentDestination}</b> is at <b>${result.nextDepartureTime}</b>`;
+                timeDisplayTop.innerHTML = `Next shuttle to <b style="font-size:1.15em;">${currentDestination}</b> is at`;
+                timeDisplayMiddle.innerHTML = `<b>${result.nextDepartureTime}</b>`;
                 timeDisplayBottom.innerText = `on ${result.nextDepartureDate}`;
             } else if (result.responseStatus === 'outOfService') {
                 timeDisplayMiddle.innerText = 'No departures soon';
