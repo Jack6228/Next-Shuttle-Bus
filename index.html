@@ -3,8 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="A live countdown until the next departure time of the University of Edinburgh's Shuttle Bus Service to and from both King's Buildings and Bristo Square.">
-    <meta name="keywords" content="Edinburgh University Shuttle Bus, Edinburgh Shuttle, Edinburgh Shuttle Bus, Shuttle Bus Timetable, Edinburgh Shuttle Timetable, Edinburgh Uni Shuttle, King's Building Shuttle">
+    <meta name="description"
+        content="A live countdown until the next departure time of the University of Edinburgh's Shuttle Bus Service to and from both King's Buildings and Bristo Square.">
+    <meta name="keywords"
+        content="Edinburgh University Shuttle Bus, Edinburgh Shuttle, Edinburgh Shuttle Bus, Shuttle Bus Timetable, Edinburgh Shuttle Timetable, Edinburgh Uni Shuttle, King's Building Shuttle">
     <meta name="author" content="Jack L Smith">
     <link rel="icon" href="fav.ico" type="image/x-icon"> <!-- Favicon -->
     <link rel="icon" href="fav.png" type="image/png"> <!-- PNG -->
@@ -48,6 +50,12 @@
             --footer-text: rgba(255, 255, 255, 0.9);
             --footer-link-border: rgba(255, 255, 255, 0.5);
             --footer-link-hover: #ffffff;
+            --popup-bg-light: #fff;
+            --popup-text-light: #1f2937;
+            --popup-link-light: #2563eb;
+            --popup-bg-dark: #1f2937;
+            --popup-text-dark: #f9fafb;
+            --popup-link-dark: #60a5fa;
         }
 
         html.dark {
@@ -56,7 +64,7 @@
             --card-bg: rgba(30, 30, 45, 0.75);
             --button-group-bg: #1e293b;
             --button-active-bg: #3b82f6;
-            --button-hover-bg: rgba(51, 65, 85, 0.5);
+            --button-hover-bg: rgba(51, 65, 85, 1);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --accent-color: #60a5fa;
@@ -66,6 +74,9 @@
             --footer-text: rgba(226, 232, 240, 0.8);
             --footer-link-border: rgba(226, 232, 240, 0.4);
             --footer-link-hover: #ffffff;
+            --popup-bg: var(--popup-bg-light);
+            --popup-text: var(--popup-text-light);
+            --popup-link: var(--popup-link-light);
         }
 
         /* --- BASE STYLES --- */
@@ -112,6 +123,7 @@
             box-shadow: 0 4px 12px var(--shadow-color);
             transition: all 0.3s ease;
             -webkit-tap-highlight-color: transparent;
+            z-index: 10000;
         }
 
         #theme-toggle:hover {
@@ -294,6 +306,30 @@
             opacity: 1;
         }
 
+        #popup {
+            background-color: var(--popup-bg-light);
+            color: var(--popup-text);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #popup a {
+            color: var(--popup-link);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
         /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 768px) {
             body {
@@ -339,6 +375,66 @@
             #timeDisplayBottom {
                 font-size: 1rem;
             }
+
+            #popup {
+                min-width: 90%;
+            }
+        }
+
+        /* Responsive adjustments for logo and text layout */
+        @media (max-width: 1150px) {
+
+            /* Mobile breakpoint */
+            #popup-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            #popup-logo {
+                max-width: 80%;
+                /* Make logo bigger on mobile */
+                height: auto;
+                max-height: 100px;
+                margin-bottom: 0.5rem;
+                /* Add some space below logo */
+            }
+
+            #popup-text-container {
+                flex-grow: 0;
+            }
+        }
+
+        @media (min-width: 1150px) {
+
+            /* Tablet and larger screens */
+            #popup-content {
+                flex-direction: row;
+                align-items: center;
+                text-align: left;
+            }
+
+            #popup {
+                max-width: 80%;
+            }
+
+            #popup-logo {
+                max-width: 150px;
+                /* Adjust as needed for desktop */
+                height: auto;
+                margin-right: 1rem;
+                /* Add space to the right of the logo */
+                margin-bottom: 0;
+            }
+
+            #popup-text-container {
+                flex-grow: 1;
+            }
+        }
+
+        @media (min-width: 1600px) {
+            #popup {
+                max-width: 60%;
+            }
         }
     </style>
 </head>
@@ -380,6 +476,22 @@
         <div class="time-display" id="timeDisplayUnderUnder"></div>
     </div>
 
+    <div id="popup"
+        style="display:none; position:fixed; left:50%; bottom:32px; transform:translateX(-50%); box-shadow:0 4px 6px rgba(0,0,0,0.1); border-radius:16px; padding:24px 32px; z-index:9999; max-width:90vw; width:fit-content;">
+        <button id="close-popup"
+            style="position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.5em; font-weight:bold; color:var(--popup-text); cursor:pointer; border-radius:50%; width:32px; height:32px; line-height:32px; text-align:center;">&times;</button>
+        <div id="popup-content" style="display:flex; align-items:center; gap:24px;">
+            <img id="popup-logo" src="img.png" alt="Company Logo"
+                style="max-width:120px; height:auto; margin-right:16px; border-radius:0px;">
+            <div id="popup-text-container" style="font-size:1.1em;">
+                Undergrad or Master's STEM Student? See this
+                opportunity to <a href="#"
+                    style="font-weight:600; color:var(--accent-color); text-decoration:underline;">publish your
+                    research</a>!
+            </div>
+        </div>
+    </div>
+
     <div class="footer">
         <a class="link" href="https://transport.ed.ac.uk/public-transport/shuttle-bus" target="_blank">Full
             Timetable</a>
@@ -392,7 +504,9 @@
         Endorsed by the University of Edinburgh
         <!--Feedback &amp; bugs: <a style="color: #664;" href="www.google.com">www.google.com</a> -->
         <br><br>
-        <a href="https://visitorbadge.io/status?path=https://jack6228.github.io/Next-Shuttle-Bus"><img id="visitor-badge" src="https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%2300  56b3&labelStyle=lower" /></a>
+        <a href="https://visitorbadge.io/status?path=https://jack6228.github.io/Next-Shuttle-Bus"><img
+                id="visitor-badge"
+                src="https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%2300  56b3&labelStyle=lower" /></a>
     </div>
     <script>
         // --- THEME TOGGLE SCRIPT ---
@@ -450,8 +564,8 @@
         ];
 
         const routeDates = [
-            { start: "2025-09-08T00:00:00", end: "2025-12-19T23:59:59" }, 
-            { start: "2026-01-12T00:00:00", end: "2026-04-03T23:59:59" }, 
+            { start: "2025-09-08T00:00:00", end: "2025-12-19T23:59:59" },
+            { start: "2026-01-12T00:00:00", end: "2026-04-03T23:59:59" },
             { start: "2026-04-20T00:00:00", end: "2026-05-22T23:59:59" }
         ];
 
@@ -584,6 +698,18 @@
         }
         updateTimeDisplay();
         setInterval(updateTimeDisplay, 1000);
+
+        // --- POP-UP FUNCTIONALITY (custom CSS only) ---
+        (function () {
+            var popup = document.getElementById('popup');
+            var closeButton = document.getElementById('close-popup');
+            setTimeout(function () {
+                popup.style.display = 'block';
+            }, 7000);
+            closeButton.onclick = function () {
+                popup.style.display = 'none';
+            };
+        })();
     </script>
 </body>
 
