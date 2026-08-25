@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <!-- Document metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Timetable | ShuttlEd</title>
+
+    <!-- SEO metadata -->
+    <meta name="description" content="View the full University of Edinburgh shuttle timetable, including term dates and weekday departure times.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://jack6228.github.io/Next-Shuttle-Bus/timetable.html">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+    <link rel="shortcut icon" href="favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="ShuttlEd" />
+    <link rel="manifest" href="favicon/site.webmanifest" />
+
+    <!-- Open Graph metadata -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jack6228.github.io/Next-Shuttle-Bus/timetable.html">
+    <meta property="og:title" content="Full Timetable | ShuttlEd">
+    <meta property="og:description" content="View the full University of Edinburgh shuttle timetable, including term dates and weekday departure times.">
+    <meta property="og:image" content="https://jack6228.github.io/Next-Shuttle-Bus/favicon/favicon.png">
+    <meta property="og:image:alt" content="ShuttlEd icon">
+    <meta property="og:site_name" content="ShuttlEd">
+    <meta property="og:locale" content="en_GB">
+
+    <!-- Twitter/X cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Full Timetable | ShuttlEd">
+    <meta name="twitter:description" content="View the full University of Edinburgh shuttle timetable, including term dates and weekday departure times.">
+    <meta name="twitter:image" content="https://jack6228.github.io/Next-Shuttle-Bus/favicon/favicon.png">
+
+    <!-- Browser theme colors -->
+    <meta name="theme-color" content="#10b981" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+
+    <!-- Tailwind build output -->
+    <link rel="stylesheet" href="output.css">
+</head>
+
+<body
+    class="bg-zinc-50 text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+
+        <!-- Header -->
+        <header class="mb-12 border-b border-zinc-200 dark:border-zinc-800 pb-8">
+            <a href="index.html"
+                class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 hover:underline mb-4 block">←
+                Back to ShuttlEd</a>
+            <h1 class="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">Full Timetable</h1>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2">University Transit Service Operating Hours</p>
+        </header>
+
+        <!-- Content -->
+        <div class="space-y-10 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+
+            <!-- Operating Term Dates Section -->
+            <section>
+                <h2 class="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+                    Service Term Dates <span class="text-xs text-zinc-400 dark:text-zinc-500">(Weekdays Only)</span>
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <span class="block text-xs text-zinc-400 dark:text-zinc-500 mb-1">Semester 1</span>
+                        <span class="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200">Sep 14, 2026 – Dec
+                            18, 2026</span>
+                    </div>
+                    <div class="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <span class="block text-xs text-zinc-400 dark:text-zinc-500 mb-1">Semester 2</span>
+                        <span class="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200">Jan 6, 2027 – Apr
+                            2, 2027</span>
+                    </div>
+                    <div class="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <span class="block text-xs text-zinc-400 dark:text-zinc-500 mb-1">Revision / Exams</span>
+                        <span class="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200">Apr 19, 2027 – May
+                            21, 2027</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Departure Schedules Section -->
+            <section>
+                <h2 class="text-base font-semibold text-zinc-900 dark:text-white mb-4">Daily Departures</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Central to KB -->
+                    <div class="border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 bg-white dark:bg-zinc-900">
+                        <h3
+                            class="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-3 flex items-center justify-between">
+                            <span>To King's Buildings</span>
+                        </h3>
+                        <div id="routeBKContainer" class="grid grid-cols-3 gap-2 text-center font-mono text-xs"></div>
+                    </div>
+
+                    <!-- KB to Central -->
+                    <div class="border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 bg-white dark:bg-zinc-900">
+                        <h3
+                            class="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-3 flex items-center justify-between">
+                            <span>To Bristo Square</span>
+                        </h3>
+                        <div id="routeKBContainer" class="grid grid-cols-3 gap-2 text-center font-mono text-xs"></div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- External Shared Data Script -->
+    <script src="schedule-data.js"></script>
+
+    <!-- Renderer Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+                const now = new Date();
+
+                // Debugging: set custom date for testing
+                // const now = new Date('2026-10-13T14:30:00'); // Example: Oct 15, 2026, 2:30 PM
+
+                const dayOfWeek = now.getDay(); // 0 = Sun, 1 = Mon, ..., 5 = Fri, 6 = Sat
+                const isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
+
+                // Check if current date falls within any active term date range
+                const isTermActive = routeDates.some(({ start, end }) => now >= start && now <= end);
+
+                // Active tracking applies only if it's a weekday during a term
+                const isServiceActiveToday = isWeekday && isTermActive;
+
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+                const renderTimes = (dataArray, containerId) => {
+                    const container = document.getElementById(containerId);
+
+                    if (!container || !dataArray) return;
+
+                    container.innerHTML = dataArray.map(item => {
+                        const [hours, minutes] = item.departure.split(':').map(Number);
+                        const departureMinutes = hours * 60 + minutes;
+
+                        const isPast = isServiceActiveToday && departureMinutes < currentMinutes;
+
+                        // Style past times in muted gray; active/future times with full contrast
+                        const styleClass = isPast
+                            ? 'bg-zinc-100/50 dark:bg-zinc-800/30 text-zinc-400 dark:text-zinc-600 border-zinc-200/30 dark:border-zinc-800/40 decoration-zinc-400/50 dark:decoration-zinc-600/50'
+                            : 'bg-zinc-100 dark:bg-zinc-800/80 text-zinc-800 dark:text-zinc-100 border-zinc-200 dark:border-zinc-700/60 font-semibold';
+
+                        return `
+                        <div class="py-1.5 px-2 rounded border transition-colors ${styleClass}">
+                            ${item.departure}
+                        </div>
+                    `;
+                    }).join('');
+                };
+
+                renderTimes(routeBKTimes, 'routeBKContainer');
+                renderTimes(routeKBTimes, 'routeKBContainer');
+            });
+        </script>
+</body>
+</html>

@@ -1,717 +1,1175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
+    <!-- Document metadata -->
     <meta charset="UTF-8">
-    <meta name="description"
-        content="A live countdown until the next departure time of the University of Edinburgh's Shuttle Bus Service to and from both King's Buildings and Bristo Square.">
-    <meta name="keywords"
-        content="Edinburgh University Shuttle Bus, Edinburgh Shuttle, Edinburgh Shuttle Bus, Shuttle Bus Timetable, Edinburgh Shuttle Timetable, Edinburgh Uni Shuttle, King's Building Shuttle">
-    <meta name="author" content="Jack L Smith">
-    <link rel="icon" href="fav.ico" type="image/x-icon"> <!-- Favicon -->
-    <link rel="icon" href="fav.png" type="image/png"> <!-- PNG -->
-    <link rel="apple-touch-icon" href="fav.png">
-    <meta name="theme-color" content="#8ec5fc">
-    <link rel="canonical" href="https://jack6228.github.io/Next-Shuttle-Bus/">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="4o7tYkwMpDXRf1oA-fG8WzihH23llmTK_73tNOCM35s" />
-    <title>When is the Next Shuttle?</title>
 
+    <!-- SEO metadata -->
+    <title>When is the Next Shuttle Bus? | ShuttlEd</title>
+    <meta name="description"
+        content="Quickly find the next shuttle bus departure time at the University of Edinburgh. Get real-time updates and walking distance to the nearest stop.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://jack6228.github.io/Next-Shuttle-Bus/">
+
+    <!-- Favicons (include at least one 48px-multiple PNG for Google) -->
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png"sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="ShuttlEd" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <!-- Open Graph metadata -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jack6228.github.io/Next-Shuttle-Bus/">
+    <meta property="og:title" content="When is the Next Shuttle Bus? | ShuttlEd">
+    <meta property="og:description"
+        content="Quickly find the next shuttle bus departure time at the University of Edinburgh. Get real-time updates and walking distance to the nearest stop.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Jack6228/Next-Shuttle-Bus/refs/heads/main/favicon/favicon.png">
+    <meta property="og:image:alt" content="ShuttlEd bus departure time preview">
+    <meta property="og:site_name" content="ShuttlEd">
+    <meta property="og:locale" content="en_GB">
+
+    <!-- Twitter/X cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="When is the Next Shuttle Bus? | ShuttlEd">
+    <meta name="twitter:description"
+        content="Quickly find the next shuttle bus departure time at the University of Edinburgh.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Jack6228/Next-Shuttle-Bus/refs/heads/main/favicon/favicon.png">
+
+    <!-- Browser theme colors -->
+    <meta name="theme-color" content="#10b981" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+
+    <!-- Tailwind build output -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link rel="stylesheet" href="output.css">
+
+    <!-- Font used by the clock -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+
+    <!-- Apply saved theme before first paint -->
     <script>
-        // This script runs first to prevent a flash of the wrong theme.
-        // It checks for a saved theme in localStorage and applies it.
-        (function () {
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            }
-        })();
+        // Prevents white flash on load
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        }
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        a.dash-underline {
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+            text-decoration-color: currentColor;
+        }
 
-        /* --- THEME VARIABLES --- */
+        .material-symbols {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+
+        /* Light theme */
         :root {
-            --bg-gradient-start: #e0c3fc;
-            --bg-gradient-end: #8ec5fc;
-            --card-bg: rgba(255, 255, 255, 0.75);
-            --button-group-bg: #e5e7eb;
-            --button-active-bg: #ffffff;
-            --button-hover-bg: rgba(255, 255, 255, 0.5);
-            --text-primary: #1f2937;
-            --text-secondary: #4b5563;
-            --accent-color: #3b82f6;
-            --accent-color-dark: #2563eb;
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --card-border: rgba(255, 255, 255, 0.2);
-            --footer-text: rgba(255, 255, 255, 0.9);
-            --footer-link-border: rgba(255, 255, 255, 0.5);
-            --footer-link-hover: #ffffff;
-            --popup-bg-light: #fff;
-            --popup-text-light: #1f2937;
-            --popup-link-light: #2563eb;
-            --popup-bg-dark: #1f2937;
-            --popup-text-dark: #f9fafb;
-            --popup-link-dark: #60a5fa;
+            --color-bg: #f8fafc;
+            /* Off-white canvas */
+            --gradient-from: #4f46e500;
+            /* Transparent indigo */
+            --gradient-to: #4f46e5;
+            /* Indigo accent */
         }
 
+        /* Dark theme */
+        :root.dark,
         html.dark {
-            --bg-gradient-start: #24243e;
-            --bg-gradient-end: #1b1458;
-            --card-bg: rgba(30, 30, 45, 0.75);
-            --button-group-bg: #1e293b;
-            --button-active-bg: #3b82f6;
-            --button-hover-bg: rgba(51, 65, 85, 1);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-color: #60a5fa;
-            --accent-color-dark: #ffffff;
-            --shadow-color: rgba(0, 0, 0, 0.2);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --footer-text: rgba(226, 232, 240, 0.8);
-            --footer-link-border: rgba(226, 232, 240, 0.4);
-            --footer-link-hover: #ffffff;
-            --popup-bg: var(--popup-bg-light);
-            --popup-text: var(--popup-text-light);
-            --popup-link: var(--popup-link-light);
+            --color-bg: #090d16;
+            /* Deep navy canvas */
+            --gradient-from: #9333ea00;
+            /* Transparent purple */
+            --gradient-to: #9333ea;
+            /* Purple accent */
         }
 
-        /* --- BASE STYLES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
+        /* Apply theme variables */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--text-primary);
-            background-color: var(--bg-gradient-end);
-            background-image: linear-gradient(62deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1.5rem;
-            line-height: 1.6;
+            /* color: var(--color-text); */
+            background-color: var(--color-bg);
+            background-image: 
+                /* radial-gradient(circle at 125% 125%, var(--gradient-from) 40%, var(--gradient-to)); */
+                radial-gradient(125% 125% at 50% 90%, var(--gradient-from) 40%,
+                    var(--gradient-to) 100%);
             transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* --- THEME TOGGLE BUTTON --- */
-        #theme-toggle {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
-            z-index: 10000;
-        }
-
-        #theme-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        #theme-toggle svg {
-            width: 24px;
-            height: 24px;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-        }
-
-        #theme-toggle-dark-icon {
-            display: none;
-        }
-
-        html.dark #theme-toggle-light-icon {
-            display: none;
-        }
-
-        html.dark #theme-toggle-dark-icon {
-            display: block;
-        }
-
-
-        /* --- MAIN CONTENT STYLES --- */
-        .container {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 var(--shadow-color);
-            width: 100%;
-            max-width: 550px;
-            text-align: center;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .container:first-of-type {
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-        }
-
-        .container:nth-of-type(2) {
-            padding: 2.5rem;
-        }
-
-        h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        h2 {
-            font-size: 1.125rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-        }
-
-        .button-group {
-            display: flex;
-            background-color: var(--button-group-bg);
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 2rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .button-group button {
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            padding: 0.75rem 1rem;
-            /* margin-left: 0.5rem; */
-            /* margin-right: 0.1rem; */
-            border: none;
-            border-radius: 9px;
-            cursor: pointer;
-            background-color: transparent;
-            color: var(--text-secondary);
-            width: 50%;
-            flex-grow: 1;
-            transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .button-group button.active {
-            background-color: var(--button-active-bg);
-            color: var(--accent-color-dark);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-        }
-
-        .button-group button:not(.active):hover {
-            background-color: var(--button-hover-bg);
-            color: var(--text-primary);
-        }
-
-        .time-display {
-            /* margin-top: 20px; */
-            transition: color 0.3s ease;
-        }
-
-        #timeDisplayTop {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        #timeDisplayMiddle {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.05em;
-            line-height: 1.1;
-        }
-
-        #timeDisplayBottom {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-
-        #timeDisplayUnderneath,
-        #timeDisplayUnderUnder {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-            line-height: 1.4;
-        }
-
-        #timeDisplayUnderneath {
-            margin-top: 2rem;
-        }
-
-        hr#next-bus-styling2,
-        br#next-bus-styling1 {
-            display: none;
-        }
-
-        /* --- FOOTER STYLES --- */
-        .footer {
-            position: relative;
-            font-size: 0.875rem;
-            color: var(--footer-text);
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 2rem;
-        }
-
-        .footer a {
-            color: var(--footer-text);
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid var(--footer-link-border);
-        }
-
-        .footer a.link-hidden {
-            border-bottom: none;
-        }
-
-        .footer a:hover {
-            color: var(--footer-link-hover);
-            border-bottom-color: var(--footer-link-hover);
-        }
-
-        .footer img {
-            margin-top: 1rem;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-
-        .footer img:hover {
-            opacity: 1;
-        }
-
-        #popup {
-            background-color: var(--popup-bg-light);
-            color: var(--popup-text);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        #popup a {
-            color: var(--popup-link);
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(100%);
-            }
-
-            to {
-                transform: translateY(0);
-            }
-        }
-
-        .slide-in {
-            animation: slideIn 0.5s ease-out forwards;
-        }
-
-        /* --- RESPONSIVE DESIGN --- */
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-
-            #theme-toggle {
-                top: 1rem;
-                right: 1rem;
-            }
-
-            .container {
-                padding: 1.5rem;
-                border-radius: 12px;
-            }
-
-            .container:first-of-type {
-                margin-bottom: 1rem;
-                padding: 1rem;
-            }
-
-            .container:nth-of-type(2) {
-                padding: 2rem 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            h2 {
-                font-size: 1rem;
-            }
-
-            .button-group button {
-                font-size: 0.9rem;
-                padding: 0.6rem 0.5rem;
-            }
-
-            #timeDisplayMiddle {
-                font-size: 2.5rem !important;
-            }
-
-            #timeDisplayBottom {
-                font-size: 1rem;
-            }
-
-            #popup {
-                min-width: 90%;
-            }
-        }
-
-        /* Responsive adjustments for logo and text layout */
-        @media (max-width: 1150px) {
-
-            /* Mobile breakpoint */
-            #popup-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            #popup-logo {
-                max-width: 80%;
-                /* Make logo bigger on mobile */
-                height: auto;
-                max-height: 100px;
-                margin-bottom: 0.5rem;
-                /* Add some space below logo */
-            }
-
-            #popup-text-container {
-                flex-grow: 0;
-            }
-        }
-
-        @media (min-width: 1150px) {
-
-            /* Tablet and larger screens */
-            #popup-content {
-                flex-direction: row;
-                align-items: center;
-                text-align: left;
-            }
-
-            #popup {
-                max-width: 80%;
-            }
-
-            #popup-logo {
-                max-width: 150px;
-                /* Adjust as needed for desktop */
-                height: auto;
-                margin-right: 1rem;
-                /* Add space to the right of the logo */
-                margin-bottom: 0;
-            }
-
-            #popup-text-container {
-                flex-grow: 1;
-            }
-        }
-
-        @media (min-width: 1600px) {
-            #popup {
-                max-width: 60%;
-            }
+            background-attachment: fixed;
         }
     </style>
+
 </head>
 
-<body>
+<body
+    class="h-full flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 font-sans antialiased">
 
-    <button id="theme-toggle" title="Toggle dark mode">
-        <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-        </svg>
-        <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-        </svg>
-    </button>
-
-
-    <div class="container">
-        <h1>Edinburgh University Shuttle Bus</h1>
-        <h2>When is the Next Bus?</h2>
-    </div>
-    <div class="container">
-        <div class="button-group">
-            <button id="routeKB" class="active">To Bristo Square</button>
-            <button id="routeBK">To King's Buildings</button>
-        </div>
-        <!-- <br style="visibility: hidden;" , id="next-bus-styling1"> -->
-        <div class="time-display" id="timeDisplayTop">Next departure in:</div>
-        <br>
-        <div class="time-display" id="timeDisplayMiddle">--:--:--</div>
-        <div class="time-display" id="timeDisplayBottom" style="margin-bottom: 0;">at --:--</div>
-        <br>
-        <!-- <br style="width: 20%; padding: 0; visibility: hidden;" id="next-bus-styling2"> -->
-        <!-- <br> -->
-        <div class="time-display" id="timeDisplayUnderneath" style="margin-top:0;"></div>
-        <div class="time-display" id="timeDisplayUnderUnder"></div>
-    </div>
-
-    <div id="popup"
-        style="display:none; position:fixed; left:50%; bottom:32px; transform:translateX(-50%); box-shadow:0 4px 6px rgba(0,0,0,0.1); border-radius:16px; padding:24px 32px; z-index:9999; max-width:90vw; width:fit-content;">
-        <button id="close-popup"
-            style="position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.5em; font-weight:bold; color:var(--popup-text); cursor:pointer; border-radius:50%; width:32px; height:32px; line-height:32px; text-align:center;">&times;</button>
-        <div id="popup-content" style="display:flex; align-items:center; gap:24px;">
-            <img id="popup-logo" src="img.png" alt="Company Logo"
-                style="max-width:120px; height:auto; margin-right:16px; border-radius:0px;">
-            <div id="popup-text-container" style="font-size:1.1em;">
-                Undergrad or Master's STEM Student? See this
-                opportunity to <a href="https://journals.ed.ac.uk/esjs"
-                    style="font-weight:600; color:var(--accent-color); text-decoration:underline;">publish your
-                    research</a>!
+    <!-- Navigation -->
+    <header
+        class="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+            <div class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                <img id="logo-light" src="logoLight.png" alt="ShuttlEd Logo" class="h-8 w-auto dark:hidden">
+                <img id="logo-dark" src="logoDark.png" alt="ShuttlEd Logo" class="h-8 w-auto hidden dark:block">
+            </div>
+            <div class="flex items-center gap-3">
+                <div
+                    class="flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900/80 shadow-sm text-sm font-mono font-semibold tracking-wider">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 dark:bg-purple-500 animate-pulse"></span>
+                    <span id="nav-clock" class="text-slate-800 dark:text-slate-200">--:--</span>
+                </div>
+                <button id="theme-toggle" aria-label="Toggle Theme"
+                    class="p-2 rounded-full border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors focus:outline-none">
+                    <svg id="theme-toggle-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="theme-toggle-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class="footer">
-        <a class="link" href="https://transport.ed.ac.uk/public-transport/shuttle-bus" target="_blank">Full
-            Timetable</a>
-        <br>
-        Current time is <span id="currentTime"></span>
-        <br><br>
-        Copyright &copy; <span id="currentYear"></span>
-        <a class="link-hidden" href="https://www.linkedin.com/in/jack-l-smith/" target="_blank">Jack L Smith</a>
-        <br>
-        Endorsed by the University of Edinburgh
-        <!--Feedback &amp; bugs: <a style="color: #664;" href="www.google.com">www.google.com</a> -->
-        <br><br>
-        <a href="https://visitorbadge.io/status?path=https://jack6228.github.io/Next-Shuttle-Bus"><img
-                id="visitor-badge"
-                src="https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%2300  56b3&labelStyle=lower" /></a>
-    </div>
+    <!-- Main grid -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:auto-rows-[16rem]">
+            <!-- Use fixed auto-row height from md+ only; mobile rows size to content. -->
+
+            <!-- Title -->
+            <div
+                class="md:col-span-2 lg:col-span-2 overflow-hidden rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-purple-500/50 transition-all duration-300 order-1 md:order-1">
+                <!-- Clip the footer strip to rounded card corners. -->
+
+                <div class="space-y-3">
+                    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                        When is the<br>
+                        <span
+                            class="relative inline-block
+                             bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+                            Next Shuttle Bus
+                        </span>?
+                    </h2>
+                    <p class="text-base text-slate-500 dark:text-slate-400 max-w-md pt-1 leading-relaxed">
+                        Quickly find the next shuttle bus departure time - and more - for the University of Edinburgh's shuttle bus service.
+                    </p>
+                </div>
+
+                <div
+                    class="-mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-8 flex items-center justify-end border-t border-slate-100 dark:border-slate-800/80 px-6 sm:px-8 py-3 bg-slate-50/50 dark:bg-slate-900/50 rounded-b-3xl transition-all duration-300">
+                    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                        <p>Lifetime views:&nbsp;
+                            <span id="visitorCount"
+                                class="font-semibold text-slate-800 dark:text-slate-100 font-mono tracking-tight">-</span>
+                        </p>
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-purple-500 animate-pulse"></span>
+                        <p>Today:&nbsp;
+                            <span id="visitorCountToday"
+                                class="font-semibold text-indigo-600 dark:text-purple-400 font-mono tracking-tight">-</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Countdown -->
+            <div
+                class="group relative flex min-h-[360px] flex-col items-center overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-700 to-slate-800 p-6 text-white shadow-md sm:p-8 md:col-span-1 md:row-span-2 lg:col-span-2 dark:border-slate-800 dark:from-slate-900 dark:to-slate-950 order-2 md:order-2 transition-all duration-300">
+                <div
+                    class="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl transition-all duration-500 group-hover:bg-indigo-500/30 dark:bg-purple-500/20 dark:group-hover:bg-purple-500/30">
+                </div>
+
+                <div class="relative z-10 flex w-full flex-1 flex-col">
+                    <!-- Stretch the inner column reliably across breakpoints. -->
+
+                    <!-- Top: Route Toggle Buttons -->
+                    <div
+                        class="mb-4 sm:mb-8 flex w-full rounded-xl border border-slate-200 bg-slate-900/5 p-1 shadow-sm backdrop-blur-sm dark:border-slate-700/60 dark:bg-slate-800/60 gap-1.5">
+                        <!-- Full-width toggle bar with tighter spacing on small screens. -->
+                        <button id="routeKB"
+                            class="flex flex-1 justify-center items-center gap-1.5 rounded-lg px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-all duration-200">
+                            <!-- Equal-width buttons; compact sizing on mobile. -->
+                            <span class="material-symbols-outlined text-base hidden sm:inline">north_east</span>
+                               <!-- Hide icons on mobile to preserve label space. -->
+                            <span>To Bristo Square</span>
+                        </button>
+                        <button id="routeBK"
+                            class="flex flex-1 justify-center items-center gap-1.5 rounded-lg px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-all duration-200">
+                            <span
+                                class="material-symbols-outlined text-base opacity-60 hidden sm:inline">south_west</span>
+                            <span>To King's Buildings</span>
+                        </button>
+                    </div>
+
+                    <!-- Main Timetable Countdown -->
+                    <div class="flex flex-grow flex-col items-center justify-center text-center p-4">
+                    
+                        <!-- STATE 1: ACTIVE COUNTDOWN -->
+                        <div id="stateActive" class="hidden flex flex-col items-center space-y-1">
+                            <p class="text-sm sm:text-base font-medium text-slate-300 dark:text-slate-400">
+                                Next departure to <span id="activeDestination" class="font-bold text-white"></span> in:
+                            </p>
+                            <p id="activeCountdown" class="text-6xl sm:text-7xl font-extrabold tabular-nums tracking-tight text-white mb-1">
+                            </p>
+                            <p id="activeDepartureTime" class="pt-4 text-xl font-medium text-indigo-400 dark:text-purple-400"></p>
+                            
+                        </div>
+                        <!-- Supplementary Timetable Info -->
+                        <div id="supplement" class="mt-8 space-y-2 text-left w-fit mx-auto">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-slate-400 mt-0.5">schedule</span>
+                                <p id="timeDisplayUnderneath" class="text-base text-slate-400 dark:text-slate-500">—</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-slate-400 mt-1">last_page</span>
+                                <p id="timeDisplayUnderUnder" class="text-base text-slate-400 dark:text-slate-500">—</p>
+                            </div>
+                        </div>
+                    
+                        <!-- STATE 2: FUTURE DATE / NEXT WORKING DAY -->
+                        <div id="stateFuture"
+                            class="hidden flex flex-col items-center space-y-3 bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 max-w-sm w-full backdrop-blur-sm">
+                            <div class="p-1 text-indigo-400 rounded-full">
+                                <span class="material-symbols-outlined text-3xl">event_upcoming</span>
+                                <p class="text-xs uppercase tracking-wider font-semibold text-slate-400">Next Service</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-300">Shuttle to <span id="futureDestination"
+                                        class="font-bold text-white"></span></p>
+                            </div>
+                            <p id="futureTime" class="text-4xl font-extrabold text-white tracking-tight my-1"></p>
+                            <span id="futureDate"
+                                class="inline-flex items-center gap-1.5 px-3 py-1 mt-2 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                                —
+                            </span>
+                        </div>
+                    
+                        <!-- STATE 3: OUT OF SERVICE -->
+                        <div id="stateOutOfService"
+                            class="hidden flex flex-col items-center space-y-3 bg-slate-800/30 border border-slate-800 rounded-2xl p-6 max-w-sm w-full">
+                            <div class="p-3 text-amber-400 rounded-full">
+                                <span class="material-symbols-outlined text-3xl">block</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white">No departures soon</h3>
+                            <p class="text-sm text-slate-400 max-w-xs">
+                                The shuttle is currently out of service until next semester.
+                            </p>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- News carousel -->
+            <div data-carousel
+                data-interval="8"
+                data-dot-active="bg-purple-600 dark:bg-indigo-400 w-4"
+                data-dot-inactive="bg-slate-200 dark:bg-slate-800 w-2"
+                class="rounded-3xl p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm flex flex-col justify-between hover:border-indigo-500/50 dark:hover:border-purple-500/50 transition-all duration-300 relative overflow-hidden group order-4 md:order-3">
+                
+                <div>
+                    <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                        <span class="material-symbols-outlined">campaign</span>
+                        <span>News</span>
+                    </h4>
+                </div>
+            
+                <!-- Slides -->
+                <div class="relative flex-1 overflow-hidden min-h-[11rem] md:min-h-0">
+
+                    <!-- Slide 1 -->
+                    <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-0 opacity-100 absolute inset-0 flex flex-col justify-start gap-4">
+                        <div class="flex flex-col h-full min-h-[160px]">
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-4">
+                                New semester. New design. Check out our latest refresh, called <b>Shuttl<span class="text-indigo-600 dark:text-purple-400">Ed</span></b>, with a new layout and brand new features!
+                            </p>
+                        </div>
+                    </div>
+            
+                    <!-- Slide 2 -->
+                    <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-full opacity-0 absolute inset-0 flex flex-col justify-between pointer-events-none">
+                        <div class="flex flex-col h-full min-h-[160px]">
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-4">
+                                Looking to boost your CV? Consider submitting your research for publication in the <a class="hover:text-sky-500 dark:hover:text-sky-100 transition-colors dash-underline hover:decoration-solid"
+                                    href="https://journals.ed.ac.uk/esjs" target="_blank">Edinburgh Student Journal of Science</a>!
+                            </p>
+                        </div>
+                    </div>
+            
+                    <!-- Slide 3 (disabled) -->
+                    <!-- <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-full opacity-0 absolute inset-0 flex flex-col justify-between pointer-events-none">
+                        <div class="flex flex-col h-full min-h-[160px]">
+                            
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-4">
+                                New semester. New design. Check out our latest refresh, called <b>Shuttl<span
+                                        class="text-indigo-600 dark:text-purple-400">Ed</span></b>, with a new layout and brand
+                                new features!
+                            </p>
+                        </div>
+                    </div> -->
+                </div>
+            
+                <!-- Navigation controls -->
+                <div class="flex items-center justify-between pt-2 -mb-2 border-t border-slate-100 dark:border-slate-800 z-10 transition-all duration-300">
+                    <div class="flex items-center gap-1.5">
+                        <button class="carousel-dot w-4 h-2 rounded-full bg-emerald-500 dark:bg-teal-400 transition-all"
+                            data-slide-to="0"></button>
+                        <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
+                            data-slide-to="1"></button>
+                        <!-- <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
+                            data-slide-to="2"></button> -->
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="carousel-prev p-1 rounded-md text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button
+                            class="carousel-next p-1 rounded-md text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools carousel -->
+            <div data-carousel
+                data-interval="5"
+                data-dot-active="bg-emerald-500 dark:bg-teal-400 w-4"
+                data-dot-inactive="bg-zinc-300 dark:bg-zinc-700 w-2"
+                class="rounded-3xl p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm flex flex-col justify-between hover:border-indigo-500/50 dark:hover:border-purple-500/50 transition-all duration-300 relative overflow-hidden group order-3 md:order-4">
+
+                <!-- Slides -->
+                <div class="relative flex-1 overflow-hidden min-h-[11rem] md:min-h-0">
+                    <!-- Slide 1: Location and distance -->
+                    <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-0 opacity-100 absolute inset-0 flex flex-col justify-start gap-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                                <span class="material-symbols-outlined">location_on</span>
+                                <span>Nearest Stop</span>
+                            </h4>
+                        </div>
+                        <div class="panel-value flex flex-col gap-1 text-slate-900 dark:text-white">
+                            <div>
+                                <span id="nearestStopValue"
+                                    class="text-sm font-bold tracking-wide leading-tight block mb-2">—</span>
+                            </div>
+                            <div class="flex items-baseline gap-1">
+                                <span id="distanceValue"
+                                    class="text-2xl font-black leading-none text-indigo-600 dark:text-purple-400">—</span>
+                                <span id="distanceSuffix" 
+                                    class="unit text-xs font-semibold text-slate-500 tracking-wider"></span>
+                            </div>
+                            <div>
+                                <span id="walkTimeValue"
+                                    class="text-sm font-medium text-slate-400 dark:text-slate-500 leading-none">—</span>
+                            </div>
+                        </div>
+                        <button id="locationPill"
+                            class="hidden inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-900 transition-colors w-fit self-end -mt-4">
+                            <span class="material-symbols-outlined text-base" id="locationIcon">settings</span>
+                            <span id="locationSub">Enable location</span>
+                        </button>
+                    </div>
+
+                    <!-- Slide 2: Today -->
+                    <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-full opacity-0 absolute inset-0 flex flex-col justify-between pointer-events-none">
+                        <div class="flex flex-col h-full min-h-[160px]">
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                                    <span class="material-symbols-outlined">directions_bus</span>
+                                    <span>Today</span>
+                                </h4>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center justify-center text-center">
+                                <div class="flex items-baseline gap-1.5">
+                                    <span id="departuresRemainingLabel"
+                                        class="text-5xl font-black tracking-tight text-indigo-600 dark:text-purple-400 leading-none">0</span>
+                                </div>
+                                <span class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400 tracking-wide">Departures
+                                    Remaining Today</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Timetable -->
+                    <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-full opacity-0 absolute inset-0 flex flex-col justify-between pointer-events-none">
+                        <div class="flex flex-col h-full min-h-[160px]">
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                                    <span class="material-symbols-outlined">calendar_today</span>
+                                    <span>Timetable</span>
+                                </h4>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center justify-center text-center">
+                                <!-- Link to full timetable -->
+                                <a href="timetable.html"
+                                    class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg border border-indigo-600 dark:border-purple-500 bg-transparent text-indigo-600 dark:text-purple-400 hover:bg-indigo-50 dark:hover:bg-purple-500/10 transition-colors">
+                                    <span>View Full Timetable</span>
+                                    <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Journey time -->
+                    <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-full opacity-0 absolute inset-0 flex flex-col justify-between pointer-events-none">
+                        <div class="flex flex-col h-full min-h-[160px]">
+                            <div>
+                                <h4
+                                    class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                                    <span class="material-symbols-outlined">schedule</span>
+                                    <span>Journey Time</span>
+                                </h4>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center justify-center text-center">
+                                <div class="flex items-baseline gap-1.5">
+                                    <span id="avgJourneyTimeValue"
+                                        class="text-5xl font-black tracking-tight text-indigo-600 dark:text-purple-400 leading-none">13</span>
+                                    <span
+                                        class="text-xl font-bold text-indigo-600 dark:text-purple-400 leading-none">mins</span>
+                                </div>
+                                <span
+                                    class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400 tracking-wide">On
+                                    Average</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Navigation controls -->
+                <div
+                    class="flex items-center justify-between pt-2 -mb-2 border-t border-slate-100 dark:border-slate-800 z-10 transition-all duration-300">
+                    <div class="flex items-center gap-1.5">
+                        <button class="carousel-dot w-4 h-2 rounded-full bg-emerald-500 dark:bg-teal-400 transition-all"
+                            data-slide-to="0"></button>
+                        <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
+                            data-slide-to="1"></button>
+                        <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
+                            data-slide-to="2"></button>
+                        <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
+                            data-slide-to="3"></button>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="carousel-prev p-1 rounded-md text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button
+                            class="carousel-next p-1 rounded-md text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-slate-200 dark:border-slate-800 py-2 bg-slate-50 dark:bg-slate-950">
+        <div
+            class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <p>Copyright &copy; <span id="year"></span> <a
+                    class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors dash-underline hover:decoration-solid"
+                    href="https://www.linkedin.com/in/jack-l-smith/" target="_blank">Jack L Smith</a></p>
+            <p>Endorsed by the University of Edinburgh - <a
+                    class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors dash-underline hover:decoration-solid"
+                    href="timetable.html">Full Timetable</a></p>
+            <div class="flex items-center gap-6">
+                <a href="privacy.html"
+                    class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Privacy</a>
+                <a href="terms.html" class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Terms</a>
+                <a href="https://ko-fi.com/jacklsmith" target="_blank" class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors underline decoration-amber-400 decoration-1 underline-offset-2 hover:decoration-amber-500">
+                    Buy me a Coffee
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="schedule-data.js"></script>
     <script>
-        // --- THEME TOGGLE SCRIPT ---
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const visitorBadge = document.getElementById('visitor-badge');
 
-        const lightBadgeSrc = "https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23add8e6&countColor=%230056b3&labelStyle=lower";
-        const darkBadgeSrc = "https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjack6228.github.io%2FNext-Shuttle-Bus%2Fv&label=VisitorCount&labelColor=%23374151&countColor=%239ca3af&labelStyle=lower";
-
-        const updateVisitorBadge = (theme) => {
-            if (theme === 'dark') {
-                visitorBadge.src = darkBadgeSrc;
-            } else {
-                visitorBadge.src = lightBadgeSrc;
+        // Format hit counts (e.g. 1130 -> 1.1k, 1234567 -> 1.2M)
+        function formatNumber(num) {
+            if (num >= 1e6) {
+                return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
             }
+            if (num >= 1e3) {
+                return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'k';
+            }
+            return num.toString();
+        }
+
+        // Optional visitor counter integration
+        (async function initVisitorCounters() {
+            const namespace = 'jack6228.github.io';
+            const totalKey = 'shuttle-bus-v-total';
+            // Daily key resets automatically each day
+            const todayDate = new Date().toISOString().slice(0, 10);
+            const todayKey = `shuttle-bus-v-${todayDate}`;
+            const previous_hits = 38816; // Previous total hits before implementing the counter
+          try {
+                // Increment total hits
+                const totalRes = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${totalKey}`);
+                const totalData = await totalRes.json();
+                document.getElementById('visitorCount').textContent = formatNumber(totalData.value + previous_hits);
+                // Increment today's hits
+                const todayRes = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${todayKey}`);
+                const todayData = await todayRes.json();
+                document.getElementById('visitorCountToday').textContent = todayData.value.toLocaleString();
+            } catch (error) {
+                console.error('Failed to update visitor counts:', error);
+            }
+        })();
+
+        /**
+    * ==========================================
+    * GLOBAL TIME
+    * ==========================================
+    * Single time source for clock, countdown, and footer.
+    * 
+    * Set OVERRIDE_TIME for deterministic testing.
+    */
+
+        // Example: "2025-09-08T17:30:00"
+        const OVERRIDE_TIME = "2026-09-15T14:55:00";
+        // Compute offset once at startup
+        const TIME_OFFSET = OVERRIDE_TIME
+            ? new Date(OVERRIDE_TIME).getTime() - Date.now()
+            : 0;
+
+        function getCurrentTime() {
+            // return new Date(Date.now() + TIME_OFFSET);
+            return new Date();
+        }
+
+        /**
+         * ==========================================
+         * 1. LIVE CLOCK
+         * ==========================================
+         * Updates the navbar clock in HH:MM format.
+         */
+        function updateClock() {
+            const clockElement = document.getElementById('nav-clock');
+
+            // Read from the shared time source
+            const now = getCurrentTime();
+
+            // Always render two digits per field
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+            // Update UI
+            clockElement.textContent = `${hours}:${minutes}`;
+        }
+        // Render immediately, then refresh every second
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        /**
+     * ==========================================
+    * 2. THEME TOGGLE
+     * ==========================================
+    * Handles theme switching, persistence, and icon state.
+     */
+        const htmlElement = document.documentElement;
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-toggle-sun');
+        const moonIcon = document.getElementById('theme-toggle-moon');
+
+        // Apply theme class, icon visibility, and saved preference
+        function applyTheme(isDark) {
+            if (isDark) {
+                htmlElement.classList.add('dark');
+                sunIcon?.classList.remove('hidden');
+                moonIcon?.classList.add('hidden');
+            } else {
+                htmlElement.classList.remove('dark');
+                moonIcon?.classList.remove('hidden');
+                sunIcon?.classList.add('hidden');
+            }
+
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Sync icons with the class set in head
+        applyTheme(htmlElement.classList.contains('dark'));
+
+        // Toggle on user click
+        themeToggleBtn?.addEventListener('click', () => {
+            const isCurrentlyDark = htmlElement.classList.contains('dark');
+            applyTheme(!isCurrentlyDark);
+        });
+
+
+        /**
+         * ==========================================
+         * 3. GEOLOCATION AND WALKING DISTANCE
+         * ==========================================
+         * Requests permission and computes nearest stop and walk estimate.
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Initialize all carousels
+            document.querySelectorAll('[data-carousel]').forEach((carouselEl) => {
+                new BentoCarousel(carouselEl);
+            });
+
+            // Restore tracking if permission is already granted
+            checkAndRestoreLocation();
+
+            // updateCarousel();
+            // startAutoRotate();
+
+            // Cache DOM nodes
+            const locationPill = document.getElementById('locationPill');
+            const nearestStopValue = document.getElementById('nearestStopValue');
+            const distanceValue = document.getElementById('distanceValue');
+            const distanceSuffix = document.getElementById('distanceSuffix');
+            const walkTimeValue = document.getElementById('walkTimeValue');
+            const locationSub = document.getElementById('locationSub');
+            const locationIcon = document.getElementById('locationIcon');
+            const departuresRemainingLabel = document.getElementById('departuresRemainingLabel');
+
+            // Pause rotation on hover
+            // const carouselContainer = document.querySelector('.carousel-slide')?.parentElement;
+            // if (carouselContainer) {
+            //     carouselContainer.addEventListener('mouseenter', stopAutoRotate);
+            //     carouselContainer.addEventListener('mouseleave', startAutoRotate);
+            // }
+
+            // Stop coordinates
+            const Bristo_Location = { lat: 55.945997180115064, lng: -3.188858238696281 };
+            const Kings_Buildings_Location = { lat: 55.92406489207606, lng: -3.1776720671436687 };
+
+            // Walking constants
+            const SPEED_KMH = 3;
+            const METERS_PER_MINUTE = (SPEED_KMH * 1000) / 60; // Approx 50 meters per minute
+
+            // Haversine distance in meters
+            function getHaversineDistance(lat1, lon1, lat2, lon2) {
+                const R = 6371000;
+                const toRad = (angle) => (angle * Math.PI) / 180;
+                const dLat = toRad(lat2 - lat1);
+                const dLon = toRad(lon2 - lon1);
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c;
+            }
+
+            // Update UI when location resolves
+            function handleLocationSuccess(position) {
+                const { latitude, longitude } = position.coords;
+                const BristodistanceMeters = Math.round(getHaversineDistance(latitude, longitude, Bristo_Location.lat, Bristo_Location.lng));
+                const KBDistanceMeters = Math.round(getHaversineDistance(latitude, longitude, Kings_Buildings_Location.lat, Kings_Buildings_Location.lng));
+
+                // Choose nearest stop
+                let nearestStop, distanceMeters;
+                if (BristodistanceMeters < KBDistanceMeters) {
+                    nearestStop = "Bristo Square";
+                    distanceMeters = BristodistanceMeters;
+                    selectRoute("routeBK");
+                } else {
+                    nearestStop = "King's Buildings";
+                    distanceMeters = KBDistanceMeters;
+                    selectRoute("routeKB");
+                }
+
+                // Round up walk time estimate
+                const walkTimeMinutes = Math.ceil(distanceMeters / METERS_PER_MINUTE);
+
+                // Hide request pill and populate outputs
+                locationPill.classList.add('hidden');
+                locationPill.classList.remove('inline-flex');
+                if (nearestStopValue) nearestStopValue.textContent = nearestStop.trim();
+                if (distanceValue) {
+                    let distanceText;
+                    let distanceSuffixText;
+                    if (distanceMeters >= 1000) {
+                        distanceText = (distanceMeters / 1000).toFixed(distanceMeters % 1000 === 0 ? 0 : 1);
+                        distanceSuffixText = 'km away';
+                    } else {
+                        distanceText = distanceMeters.toLocaleString();
+                        distanceSuffixText = 'm away';
+                    }
+                    // Optional: annotate very long distances
+                    distanceValue.textContent = `${distanceText}`;
+                    distanceSuffix.textContent = distanceSuffixText;
+                }
+                if (walkTimeValue) {
+                    if (distanceMeters >= 5000) {
+                        walkTimeValue.textContent = `you probably shouldn't walk this far`.trim();
+                    } else {
+                        walkTimeValue.textContent = `~${walkTimeMinutes} min walk`.trim();
+                    }
+                }
+            }
+
+            // Track geolocation watch state
+            let watchId = null;
+
+            
+
+            async function checkAndRestoreLocation() {
+                if (!("navigator" in window && "permissions" in navigator)) return;
+
+                try {
+                    const status = await navigator.permissions.query({ name: "geolocation" });
+                    if (status.state === "granted") {
+                        // Auto-start if already granted
+                        startLocationTracking();
+                    }
+
+                    // Stop if permission is revoked
+                    status.onchange = () => {
+                        if (status.state === "denied") stopLocationTracking();
+                    };
+                } catch (e) {
+                    // Ignore unsupported permissions API
+                }
+            }
+
+            function requestLocation() {
+                // Toggle tracking from the pill button
+                if (watchId !== null) {
+                    // Disable tracking if already active
+                    stopLocationTracking();
+                    return;
+                }
+                startLocationTracking();
+            }
+
+            function startLocationTracking() {
+                if (!("geolocation" in navigator)) {
+                    locationSub.textContent = "Not Supported";
+                    locationIcon.textContent = "location_disabled";
+                    return;
+                }
+
+                locationSub.textContent = "Locating...";
+
+                // watchPosition updates as the device moves
+                watchId = navigator.geolocation.watchPosition(
+                    (position) => {
+                        // Active tracking UI state
+                        locationPill.classList.add("bg-indigo-600", "text-white");
+                        locationIcon.textContent = "my_location";
+                        locationSub.textContent = "Live Updates";
+
+                        handleLocationSuccess(position);
+                    },
+                    (error) => {
+                        stopLocationTracking();
+                        if (error.code === error.PERMISSION_DENIED) {
+                            locationSub.textContent = "Access Denied";
+                            locationIcon.textContent = "location_disabled";
+                            // Debug fallback example
+                            // position = {
+                            //     coords: {
+                            //         latitude: -51.5074,
+                            //         longitude: -80.1278
+                            //     }
+                            // };
+                            handleLocationSuccess(position);
+                        } else {
+                            locationSub.textContent = "Location Error";
+                            locationIcon.textContent = "error";
+                        }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 10000 // Reuse cached position for up to 10s
+                    }
+                );
+            }
+
+            function stopLocationTracking() {
+                if (watchId !== null) {
+                    navigator.geolocation.clearWatch(watchId);
+                    watchId = null;
+                }
+                locationPill.classList.remove("bg-indigo-600", "text-white");
+                locationIcon.textContent = "location_searching";
+                locationSub.textContent = "Enable Location";
+            }
+
+            // If already granted, fetch without prompting
+            if (navigator.permissions && navigator.permissions.query) {
+                navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+                    if (result.state === 'granted') {
+                        navigator.geolocation.getCurrentPosition(handleLocationSuccess);
+                    } else {
+                        // Show enable button when not yet granted
+                        locationPill.classList.remove('hidden');
+                        locationPill.classList.add('inline-flex');
+                    }
+                });
+            } else {
+                locationPill.classList.remove('hidden');
+                locationPill.classList.add('inline-flex');
+            }
+
+            // Bind click handler
+            locationPill.addEventListener('click', requestLocation);
+        });
+
+        
+
+    class BentoCarousel {
+            constructor(containerElement) {
+                this.container = containerElement;
+                this.slides = this.container.querySelectorAll('.carousel-slide');
+                this.dots = this.container.querySelectorAll('.carousel-dot');
+                this.prevBtn = this.container.querySelector('.carousel-prev');
+                this.nextBtn = this.container.querySelector('.carousel-next');
+
+                const seconds = parseFloat(this.container.dataset.interval) || 5;
+                this.rotateInterval = seconds * 1000;
+
+                this.activeDotClass = this.container.dataset.dotActive || 'bg-emerald-500 dark:bg-teal-400 w-4';
+                this.inactiveDotClass = this.container.dataset.dotInactive || 'bg-zinc-300 dark:bg-zinc-700 w-2';
+
+                this.currentSlide = 0;
+                this.autoRotateTimer = null;
+
+                this.init();
+            }
+
+            init() {
+                if (this.slides.length === 0) return;
+
+                if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.nextSlide(true));
+                if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.prevSlide());
+
+                this.dots.forEach((dot) => {
+                    dot.addEventListener('click', () => {
+                        const targetIndex = parseInt(dot.getAttribute('data-slide-to'), 10);
+                        if (!isNaN(targetIndex)) this.goToSlide(targetIndex);
+                    });
+                });
+
+                // Pause/resume only this carousel on hover
+                this.container.addEventListener('mouseenter', () => this.stopAutoRotate());
+                this.container.addEventListener('mouseleave', () => this.startAutoRotate());
+
+                this.updateCarousel();
+                this.startAutoRotate();
+            }
+
+            updateCarousel() {
+                this.slides.forEach((slide, index) => {
+                    if (index === this.currentSlide) {
+                        slide.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none');
+                        slide.classList.add('translate-x-0', 'opacity-100');
+                    } else if (index < this.currentSlide) {
+                        slide.classList.remove('translate-x-0', 'translate-x-full', 'opacity-100');
+                        slide.classList.add('-translate-x-full', 'opacity-0', 'pointer-events-none');
+                    } else {
+                        slide.classList.remove('translate-x-0', '-translate-x-full', 'opacity-100');
+                        slide.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+                    }
+                });
+
+                this.dots.forEach((dot, index) => {
+                    const baseClasses = 'carousel-dot h-2 rounded-full transition-all duration-300';
+                    if (index === this.currentSlide) {
+                        dot.className = `${baseClasses} ${this.activeDotClass}`;
+                    } else {
+                        dot.className = `${baseClasses} ${this.inactiveDotClass}`;
+                    }
+                });
+            }
+
+            startAutoRotate() {
+                if (this.slides.length <= 1) return;
+                this.stopAutoRotate();
+                this.autoRotateTimer = setInterval(() => {
+                    this.nextSlide(false);
+                }, this.rotateInterval);
+            }
+
+            stopAutoRotate() {
+                if (this.autoRotateTimer) {
+                    clearInterval(this.autoRotateTimer);
+                    this.autoRotateTimer = null;
+                }
+            }
+
+            goToSlide(index) {
+                this.currentSlide = index;
+                this.updateCarousel();
+                this.startAutoRotate();
+            }
+
+            nextSlide(userInitiated = true) {
+                this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+                this.updateCarousel();
+                if (userInitiated) this.startAutoRotate();
+            }
+
+            prevSlide() {
+                this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+                this.updateCarousel();
+                this.startAutoRotate();
+            }
+        }
+
+        /**
+         * ==========================================
+         * 5. FOOTER YEAR
+         * ==========================================
+         * Keeps the footer year in sync with the shared time source.
+         */
+        document.getElementById('year').textContent = getCurrentTime().getFullYear();
+
+        /**
+         * ==========================================
+         * 6. SHUTTLE TIMETABLE AND COUNTDOWN
+         * ==========================================
+         * Handles route selection, next departure lookup, and countdown rendering.
+         */
+
+        // Last service date guard to prevent infinite date scanning
+        const LAST_SERVICE_DATE = routeDates[routeDates.length - 1].end;
+
+        // Route definitions
+        const routes = {
+            routeKB: { times: routeKBTimes, destination: "Bristo Square" },
+            routeBK: { times: routeBKTimes, destination: "King's Buildings" }
         };
 
-        // Set initial badge based on theme
-        if (document.documentElement.classList.contains('dark')) {
-            updateVisitorBadge('dark');
-        }
+        // Cache frequently used DOM nodes
+        const el = {
+            top: document.getElementById("timeDisplayTop"),
+            middle: document.getElementById("timeDisplayMiddle"),
+            bottom: document.getElementById("timeDisplayBottom"),
+            under: document.getElementById("timeDisplayUnderneath"),
+            underUnder: document.getElementById("timeDisplayUnderUnder"),
+            routeKB: document.getElementById("routeKB"),
+            routeBK: document.getElementById("routeBK")
+        };
 
-        themeToggleBtn.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
+        let currentRouteId = "routeKB";
 
-            let theme = 'light';
-            if (document.documentElement.classList.contains('dark')) {
-                theme = 'dark';
+        // Route toggle button classes
+        const activeBtnClasses = ['bg-emerald-600', 'text-white', 'shadow-sm'];
+        const inactiveBtnClasses = ['text-zinc-400', 'dark:text-zinc-400', 'hover:bg-zinc-200/50', 'hover:text-zinc-900', 'dark:hover:bg-zinc-700/50', 'dark:hover:text-white'];
+
+        // Update route button state
+        function updateBtnState(btn, isActive) {
+            if (isActive) {
+                btn.classList.add(...activeBtnClasses);
+                btn.classList.remove(...inactiveBtnClasses);
+            } else {
+                btn.classList.add(...inactiveBtnClasses);
+                btn.classList.remove(...activeBtnClasses);
             }
-            localStorage.setItem('theme', theme);
-            updateVisitorBadge(theme);
-        });
-
-
-        // --- ORIGINAL APP SCRIPT ---
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        function updateCurrentTime() {
-            const now = new Date().toLocaleString('en-GB', {
-                timeZone: 'Europe/London',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            document.getElementById('currentTime').textContent = now;
         }
-        updateCurrentTime();
-        setInterval(updateCurrentTime, 1000);
 
-        const routeBKTimes = [
-            { departure: "08:18", arrival: "08:32" }, { departure: "08:38", arrival: "08:52" }, { departure: "09:08", arrival: "09:22" }, { departure: "09:33", arrival: "09:47" }, { departure: "09:53", arrival: "10:07" }, { departure: "10:13", arrival: "10:27" }, { departure: "10:33", arrival: "10:47" }, { departure: "10:53", arrival: "11:07" }, { departure: "11:13", arrival: "11:27" }, { departure: "11:33", arrival: "11:47" }, { departure: "11:53", arrival: "12:07" }, { departure: "12:13", arrival: "12:27" }, { departure: "12:33", arrival: "12:47" }, { departure: "12:53", arrival: "13:07" }, { departure: "13:13", arrival: "13:27" }, { departure: "13:33", arrival: "13:47" }, { departure: "13:53", arrival: "14:07" }, { departure: "14:13", arrival: "14:27" }, { departure: "14:33", arrival: "14:47" }, { departure: "14:53", arrival: "15:07" }, { departure: "15:13", arrival: "15:27" }, { departure: "15:33", arrival: "15:47" }, { departure: "15:53", arrival: "16:11" }, { departure: "16:23", arrival: "16:41" }, { departure: "16:53", arrival: "17:11" }, { departure: "17:23", arrival: "17:41" }, { departure: "17:53", arrival: "18:11" }
-        ];
-
-        const routeKBTimes = [
-            { departure: "08:35", arrival: "08:46" }, { departure: "09:05", arrival: "09:16" }, { departure: "09:35", arrival: "09:46" }, { departure: "09:55", arrival: "10:06" }, { departure: "10:15", arrival: "10:26" }, { departure: "10:35", arrival: "10:46" }, { departure: "10:55", arrival: "11:06" }, { departure: "11:15", arrival: "11:26" }, { departure: "11:35", arrival: "11:46" }, { departure: "11:55", arrival: "12:06" }, { departure: "12:15", arrival: "12:26" }, { departure: "12:35", arrival: "12:46" }, { departure: "12:55", arrival: "13:06" }, { departure: "13:15", arrival: "13:26" }, { departure: "13:35", arrival: "13:46" }, { departure: "13:55", arrival: "14:06" }, { departure: "14:15", arrival: "14:26" }, { departure: "14:35", arrival: "14:46" }, { departure: "14:55", arrival: "15:06" }, { departure: "15:15", arrival: "15:26" }, { departure: "15:35", arrival: "15:46" }, { departure: "15:55", arrival: "16:10" }, { departure: "16:25", arrival: "16:40" }, { departure: "16:55", arrival: "17:10" }, { departure: "17:25", arrival: "17:40" }, { departure: "17:55", arrival: "18:10" }, { departure: "18:25", arrival: "18:40" }
-        ];
-
-        const routeDates = [
-            { start: "2025-09-08T00:00:00", end: "2025-12-19T23:59:59" },
-            { start: "2026-01-12T00:00:00", end: "2026-04-03T23:59:59" },
-            { start: "2026-04-20T00:00:00", end: "2026-05-22T23:59:59" }
-        ];
-
-        let currentRoute = routeKBTimes;
-        let currentDestination = 'Bristo Square';
-
-        document.getElementById('routeBK').addEventListener('click', () => {
-            currentRoute = routeBKTimes;
-            currentDestination = 'King\'s Buildings';
-            updateActiveButton('routeBK');
+        // Select active route and refresh immediately
+        function selectRoute(routeId) {
+            currentRouteId = routeId;
+            updateBtnState(el.routeKB, routeId === "routeKB");
+            updateBtnState(el.routeBK, routeId === "routeBK");
             updateTimeDisplay();
-        });
-        document.getElementById('routeKB').addEventListener('click', () => {
-            currentRoute = routeKBTimes;
-            currentDestination = 'Bristo Square';
-            updateActiveButton('routeKB');
-            updateTimeDisplay();
-        });
-
-        function updateActiveButton(activeButtonId) {
-            document.getElementById('routeBK').classList.remove('active');
-            document.getElementById('routeKB').classList.remove('active');
-            document.getElementById(activeButtonId).classList.add('active');
         }
 
-        function isValidDate(currentDateTime) {
-            const dateRanges = routeDates.map(range => ({
-                start: new Date(range.start),
-                end: new Date(range.end)
-            }));
-            const isWeekday = currentDateTime.getDay() >= 1 && currentDateTime.getDay() <= 5;
-            const isWithinRange = dateRanges.some(range => {
-                const startTime = range.start.getTime();
-                const endTime = range.end.getTime();
-                const currentTime = currentDateTime.getTime();
-                return currentTime >= startTime && currentTime <= endTime;
-            });
-            return [isWeekday, isWithinRange];
+        // Bind route toggle events
+        el.routeKB.addEventListener("click", () => selectRoute("routeKB"));
+        el.routeBK.addEventListener("click", () => selectRoute("routeBK"));
+
+        // True when date is a weekday in any service range
+        function isServiceDay(date) {
+            const isWeekday = date.getDay() >= 1 && date.getDay() <= 5;
+            const time = date.getTime();
+            const inRange = routeDates.some(r => time >= r.start.getTime() && time <= r.end.getTime());
+            return isWeekday && inRange;
         }
 
-        function getNextDepartureTimeTime() {
-            const now = new Date().toLocaleString('en-US', { timeZone: 'Europe/London' });
-            const currentDateTime = new Date(now);
+        // Build a Date from day + HH:MM
+        function departureOn(day, timeStr) {
+            const [hours, minutes] = timeStr.split(":").map(Number);
+            const d = new Date(day);
+            d.setHours(hours, minutes, 0, 0);
+            return d;
+        }
 
-            // For testing:
-            // Subtract N hours from the current time
-            // currentDateTime.setHours(currentDateTime.getHours() - 1);            
-            // and adjust the date
-            // currentDateTime.setFullYear(2025, 9, 17);
-
-            const dateRanges = routeDates.map(range => ({ start: new Date(range.start), end: new Date(range.end) }));
-            const [isWeekday, isWithinRange] = isValidDate(currentDateTime);
-            const departuresLeftToday = currentRoute.filter(time => {
-                const [hours, minutes] = time.departure.split(':');
-                const departureDateTime = new Date(currentDateTime);
-                departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-                return departureDateTime > currentDateTime;
+        // Format time for UI display
+        function formatTime(date) {
+            return date.toLocaleTimeString("en-GB", {
+                timeZone: "Europe/London",
+                hour: "2-digit",
+                minute: "2-digit"
             });
-            const today = new Date(currentDateTime);
+        }
+
+        // Compute next departure and display state
+        function getNextDeparture() {
+            // Use shared time source
+            const now = getCurrentTime();
+
+            const times = routes[currentRouteId].times;
+            const today = new Date(now);
             today.setHours(0, 0, 0, 0);
-            const departureTimes = currentRoute.map(time => {
-                const [hours, minutes] = time.departure.split(':');
-                const departureDateTime = new Date(today);
-                departureDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-                return departureDateTime;
-            });
-            const nextDepartureTime = departureTimes.find(time => time > currentDateTime);
-            if (!nextDepartureTime || (!isWeekday || !isWithinRange)) {
-                let nextDepartureDate = new Date(today);
-                nextDepartureDate.setDate(nextDepartureDate.getDate() + 1);
-                if (nextDepartureDate > dateRanges[dateRanges.length - 1].end) {
-                    return { responseStatus: 'outOfService' };
-                }
-                while (!isValidDate(nextDepartureDate)[0] || !isValidDate(nextDepartureDate)[1]) {
-                    nextDepartureDate.setDate(nextDepartureDate.getDate() + 1);
-                }
+
+            // Find next departure today
+            const nextToday = times
+                .map(t => departureOn(today, t.departure))
+                .find(d => d > now);
+
+            // No valid departure today or not a service day
+            if (!nextToday || !isServiceDay(now)) {
+                const nextDay = new Date(today);
+
+                // Advance until the next valid service day
+                do {
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    if (nextDay > LAST_SERVICE_DATE) return { status: "outOfService" };
+                } while (!isServiceDay(nextDay));
+
+                // Return future-service state
                 return {
-                    responseStatus: 'nextDepartureDate',
-                    nextDepartureTime: departureTimes[0].toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' }),
-                    nextDepartureDate: nextDepartureDate.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
+                    status: "futureDate",
+                    nextDepartureTime: formatTime(departureOn(nextDay, times[0].departure)),
+                    nextDepartureDate: nextDay.toLocaleDateString("en-GB", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long"
+                    })
                 };
             }
-            const timeDiffMs = nextDepartureTime - currentDateTime;
-            const hoursRemaining = Math.floor(timeDiffMs / (1000 * 60 * 60));
-            const minutesRemaining = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const secondsRemaining = Math.floor((timeDiffMs % (1000 * 60)) / 1000);
-            const futureDepartures = departuresLeftToday.slice(1, 4).map(time => time.departure);
-            if (futureDepartures.length === 0) {
-                futureDepartures.push('-');
-            }
+
+            // Active service: calculate remaining time
+            const diffMs = nextToday - now;
+            const hours = Math.floor(diffMs / 3_600_000);
+            const minutes = Math.floor((diffMs % 3_600_000) / 60_000);
+            const seconds = Math.floor((diffMs % 60_000) / 1000);
+
+            // Next three departures for the supplement row
+            const later = times
+                .map(t => departureOn(today, t.departure))
+                .filter(d => d > nextToday)
+                .slice(0, 3)
+                .map(formatTime);
+
             return {
-                responseStatus: 'success',
-                nextDepartureTime: nextDepartureTime.toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' }),
-                timeRemaining: `${hoursRemaining}h ${minutesRemaining}m ${secondsRemaining}s`,
-                futureDepartures: futureDepartures
+                status: "success",
+                nextDepartureTime: formatTime(nextToday),
+                timeRemaining: `${hours}h ${minutes}m ${seconds}s`,
+                futureDepartures: later.length ? later : ["-"]
             };
         }
 
+        // Render active/future/out-of-service state
         function updateTimeDisplay() {
-            const result = getNextDepartureTimeTime();
-            const timeDisplayTop = document.getElementById('timeDisplayTop');
-            const timeDisplayMiddle = document.getElementById('timeDisplayMiddle');
-            const timeDisplayBottom = document.getElementById('timeDisplayBottom');
-            const timeDisplayUnderneath = document.getElementById('timeDisplayUnderneath');
-            const timeDisplayUnderUnder = document.getElementById('timeDisplayUnderUnder');
-            const last_departure = currentRoute[currentRoute.length - 1].departure;
+                const result = getNextDeparture();
+                const { destination, times } = routes[currentRouteId];
+                const lastDeparture = times[times.length - 1].departure;
 
-            timeDisplayUnderneath.innerText = '';
-            timeDisplayUnderUnder.innerText = '';
-            timeDisplayTop.innerHTML = '';
-            timeDisplayMiddle.style.fontSize = '';
-            timeDisplayMiddle.style.fontWeight = 'normal';
+                // State containers
+                const stateActive = document.getElementById("stateActive");
+                const stateFuture = document.getElementById("stateFuture");
+                const stateOutOfService = document.getElementById("stateOutOfService");
+                const supplement = document.getElementById("supplement");
 
-            if (result.responseStatus === 'nextDepartureDate') {
-                timeDisplayTop.innerHTML = `Next shuttle to <b style="font-size:1.15em;">${currentDestination}</b> is at`;
-                timeDisplayMiddle.innerHTML = `<b>${result.nextDepartureTime}</b>`;
-                timeDisplayBottom.innerText = `on ${result.nextDepartureDate}`;
-            } else if (result.responseStatus === 'outOfService') {
-                timeDisplayMiddle.innerText = 'No departures soon';
-                timeDisplayBottom.innerText = 'The shuttle is now out of service until next semester';
-            } else {
-                timeDisplayTop.innerHTML = `Next departure to <b style="font-size:1.15em;">${currentDestination}</b> in:`;
-                timeDisplayMiddle.innerText = result.timeRemaining.startsWith('0h ') ? result.timeRemaining.slice(3) : result.timeRemaining;
-                timeDisplayMiddle.style.fontSize = '3em';
-                timeDisplayMiddle.style.fontWeight = 'bold';
-                timeDisplayBottom.innerText = `at ${result.nextDepartureTime}`;
-                timeDisplayUnderneath.innerText = `Later departures: ${result.futureDepartures.join(', ')}`;
-                timeDisplayUnderUnder.innerText = `Last departure today: ${last_departure}`;
+                // Reset visibility each tick
+                stateActive.classList.add("hidden");
+                stateFuture.classList.add("hidden");
+                stateOutOfService.classList.add("hidden");
+                supplement.classList.add("hidden");
+
+                // Out of service
+                if (result.status === "outOfService") {
+                    stateOutOfService.classList.remove("hidden");
+                    return;
+                }
+
+                // Future service day
+                if (result.status === "futureDate") {
+                    document.getElementById("futureDestination").textContent = destination;
+                    document.getElementById("futureTime").textContent = result.nextDepartureTime;
+                    document.getElementById("futureDate").textContent = `On ${result.nextDepartureDate}`;
+
+                    stateFuture.classList.remove("hidden");
+                    return;
+                }
+
+                // Active countdown
+                const remaining = result.timeRemaining.startsWith("0h ")
+                    ? result.timeRemaining.slice(3)
+                    : result.timeRemaining;
+
+                document.getElementById("activeDestination").textContent = destination;
+                document.getElementById("activeCountdown").textContent = remaining;
+                document.getElementById("activeDepartureTime").textContent = `at ${result.nextDepartureTime}`;
+                document.getElementById("timeDisplayUnderneath").textContent = `Later: ${result.futureDepartures.join(", ")}`;
+                document.getElementById("timeDisplayUnderUnder").textContent = `Last: ${lastDeparture}`;
+
+                stateActive.classList.remove("hidden");
+                supplement.classList.remove("hidden");
+
+                // Departures remaining today
+                function timeStringToMinutes(timeStr) {
+                    const [hours, minutes] = timeStr.split(':').map(Number);
+                    return hours * 60 + minutes;
+                }
+
+                const now = getCurrentTime();
+                const nowInMinutes = (now.getHours() * 60) + now.getMinutes();
+
+                const departuresRemaining = routes[currentRouteId].times.filter(t => {
+                    return timeStringToMinutes(t.departure) > nowInMinutes;
+                }).length;
+
+                if (departuresRemainingLabel && departuresRemaining) {
+                    departuresRemainingLabel.textContent = departuresRemaining.toString().trim();
+                }
             }
-        }
-        updateTimeDisplay();
+            
+        // Initial render + 1s updates
+        selectRoute("routeKB");
         setInterval(updateTimeDisplay, 1000);
-
-        // --- POP-UP FUNCTIONALITY (custom CSS only) ---
-        (function () {
-            var popup = document.getElementById('popup');
-            var closeButton = document.getElementById('close-popup');
-            setTimeout(function () {
-                popup.style.display = 'block';
-            }, 7000);
-            closeButton.onclick = function () {
-                popup.style.display = 'none';
-            };
-        })();
     </script>
 </body>
-
 
 </html>
