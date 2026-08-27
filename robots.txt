@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jack6228.github.io/Next-Shuttle-Bus/sitemap.xml
