@@ -14,7 +14,7 @@
     <link rel="canonical" href="https://jack6228.github.io/Next-Shuttle-Bus/">
 
     <!-- Favicons (include at least one 48px-multiple PNG for Google) -->
-    <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png"sizes="96x96" />
+    <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./favicon/favicon.svg" />
     <link rel="shortcut icon" href="./favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
@@ -299,6 +299,20 @@
                 <!-- Slides -->
                 <div class="relative flex-1 overflow-hidden min-h-[11rem] md:min-h-0">
 
+                    <!-- Slide 3 (disabled) -->
+                    <div
+                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-full opacity-0 absolute inset-0 flex flex-col justify-between pointer-events-none">
+                        <div class="flex flex-col h-full min-h-[160px]">
+                    
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-4">
+                                Looking for a bus that's not the shuttle? Use our new <a
+                                    class="font-normal text-slate-600 underline decoration-dotted decoration-slate-600 hover:text-purple-600 hover:decoration-solid hover:decoration-purple-600 transition-all"
+                                    href="./buses.html">Lothian Bus Routes</a> page to find Lothian buses between King's buildings and
+                                central!
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Slide 1 -->
                     <div
                         class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-0 opacity-100 absolute inset-0 flex flex-col justify-start gap-4">
@@ -319,19 +333,7 @@
                             </p>
                         </div>
                     </div>
-            
-                    <!-- Slide 3 (disabled) -->
-                    <!-- <div
-                        class="carousel-slide transition-all duration-500 ease-in-out transform translate-x-full opacity-0 absolute inset-0 flex flex-col justify-between pointer-events-none">
-                        <div class="flex flex-col h-full min-h-[160px]">
-                            
-                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-4">
-                                New semester. New design. Check out our latest refresh, called <b>Shuttl<span
-                                        class="text-indigo-600 dark:text-purple-400">Ed</span></b>, with a new layout and brand
-                                new features!
-                            </p>
-                        </div>
-                    </div> -->
+
                 </div>
             
                 <!-- Navigation controls -->
@@ -341,8 +343,8 @@
                             data-slide-to="0"></button>
                         <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
                             data-slide-to="1"></button>
-                        <!-- <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
-                            data-slide-to="2"></button> -->
+                        <button class="carousel-dot w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-all"
+                            data-slide-to="2"></button>
                     </div>
                     <div class="flex items-center gap-1">
                         <button

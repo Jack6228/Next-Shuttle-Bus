@@ -9,6 +9,10 @@
     monospace;
     --color-amber-400: oklch(82.8% 0.189 84.429);
     --color-amber-500: oklch(76.9% 0.188 70.08);
+    --color-amber-600: oklch(66.6% 0.179 58.318);
+    --color-amber-700: oklch(55.5% 0.163 48.998);
+    --color-amber-800: oklch(47.3% 0.137 46.201);
+    --color-amber-900: oklch(41.4% 0.112 45.904);
     --color-emerald-500: oklch(69.6% 0.17 162.48);
     --color-emerald-600: oklch(59.6% 0.145 163.225);
     --color-teal-400: oklch(77.7% 0.152 181.912);
@@ -24,6 +28,7 @@
     --color-indigo-800: oklch(39.8% 0.195 277.366);
     --color-indigo-900: oklch(35.9% 0.144 278.697);
     --color-indigo-950: oklch(25.7% 0.09 281.288);
+    --color-purple-200: oklch(90.2% 0.063 306.703);
     --color-purple-400: oklch(71.4% 0.203 305.504);
     --color-purple-500: oklch(62.7% 0.265 303.9);
     --color-purple-600: oklch(55.8% 0.288 302.321);
@@ -54,6 +59,8 @@
     --container-xs: 20rem;
     --container-sm: 24rem;
     --container-md: 28rem;
+    --container-lg: 32rem;
+    --container-xl: 36rem;
     --container-2xl: 42rem;
     --container-3xl: 48rem;
     --container-4xl: 56rem;
@@ -347,6 +354,9 @@
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
   }
+  .mt-10 {
+    margin-top: calc(var(--spacing) * 10);
+  }
   .-mb-2 {
     margin-bottom: calc(var(--spacing) * -2);
   }
@@ -473,11 +483,17 @@
   .max-w-6xl {
     max-width: var(--container-6xl);
   }
+  .max-w-lg {
+    max-width: var(--container-lg);
+  }
   .max-w-md {
     max-width: var(--container-md);
   }
   .max-w-sm {
     max-width: var(--container-sm);
+  }
+  .max-w-xl {
+    max-width: var(--container-xl);
   }
   .max-w-xs {
     max-width: var(--container-xs);
@@ -1028,6 +1044,18 @@
   .text-amber-400 {
     color: var(--color-amber-400);
   }
+  .text-amber-600 {
+    color: var(--color-amber-600);
+  }
+  .text-amber-700 {
+    color: var(--color-amber-700);
+  }
+  .text-amber-800 {
+    color: var(--color-amber-800);
+  }
+  .text-amber-900 {
+    color: var(--color-amber-900);
+  }
   .text-indigo-200 {
     color: var(--color-indigo-200);
   }
@@ -1045,6 +1073,9 @@
   }
   .text-indigo-800 {
     color: var(--color-indigo-800);
+  }
+  .text-purple-200 {
+    color: var(--color-purple-200);
   }
   .text-slate-300 {
     color: var(--color-slate-300);
@@ -1101,11 +1132,17 @@
   .decoration-amber-400 {
     text-decoration-color: var(--color-amber-400);
   }
+  .decoration-slate-600 {
+    text-decoration-color: var(--color-slate-600);
+  }
   .decoration-zinc-400\/50 {
     text-decoration-color: color-mix(in srgb, oklch(70.5% 0.015 286.067) 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       text-decoration-color: color-mix(in oklab, var(--color-zinc-400) 50%, transparent);
     }
+  }
+  .decoration-dotted {
+    text-decoration-style: dotted;
   }
   .decoration-1 {
     text-decoration-thickness: 1px;
@@ -1230,6 +1267,19 @@
         background-color: color-mix(in oklab, var(--color-zinc-200) 50%, transparent);
       }
     }
+    .hover\:font-semibold:hover {
+      --tw-font-weight: var(--font-weight-semibold);
+      font-weight: var(--font-weight-semibold);
+    }
+    .hover\:text-indigo-600:hover {
+      color: var(--color-indigo-600);
+    }
+    .hover\:text-purple-200:hover {
+      color: var(--color-purple-200);
+    }
+    .hover\:text-purple-600:hover {
+      color: var(--color-purple-600);
+    }
     .hover\:text-sky-500:hover {
       color: var(--color-sky-500);
     }
@@ -1244,6 +1294,15 @@
     }
     .hover\:decoration-amber-500:hover {
       text-decoration-color: var(--color-amber-500);
+    }
+    .hover\:decoration-indigo-600:hover {
+      text-decoration-color: var(--color-indigo-600);
+    }
+    .hover\:decoration-purple-200:hover {
+      text-decoration-color: var(--color-purple-200);
+    }
+    .hover\:decoration-purple-600:hover {
+      text-decoration-color: var(--color-purple-600);
     }
     .hover\:decoration-solid:hover {
       text-decoration-style: solid;
@@ -1612,6 +1671,12 @@
         background-color: color-mix(in oklab, var(--color-zinc-700) 50%, transparent);
       }
     }
+    .dark\:hover\:text-indigo-400:where(.dark, .dark *):hover {
+      color: var(--color-indigo-400);
+    }
+    .dark\:hover\:text-purple-200:where(.dark, .dark *):hover {
+      color: var(--color-purple-200);
+    }
     .dark\:hover\:text-sky-100:where(.dark, .dark *):hover {
       color: var(--color-sky-100);
     }
@@ -1620,6 +1685,12 @@
     }
     .dark\:hover\:text-white:where(.dark, .dark *):hover {
       color: var(--color-white);
+    }
+    .dark\:hover\:decoration-indigo-400:where(.dark, .dark *):hover {
+      text-decoration-color: var(--color-indigo-400);
+    }
+    .dark\:hover\:decoration-purple-200:where(.dark, .dark *):hover {
+      text-decoration-color: var(--color-purple-200);
     }
   }
 }

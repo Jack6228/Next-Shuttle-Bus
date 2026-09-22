@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <!-- Document metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Routes | ShuttlEd</title>
+
+    <!-- SEO metadata -->
+    <meta name="description"
+        content="View all Lothian Bus routes departing from or heading to King's Buildings, Edinburgh.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://jack6228.github.io/Next-Shuttle-Bus/routes.html">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+    <link rel="shortcut icon" href="favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="ShuttlEd" />
+    <link rel="manifest" href="favicon/site.webmanifest" />
+
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <!-- Open Graph metadata -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jack6228.github.io/Next-Shuttle-Bus/routes.html">
+    <meta property="og:title" content="Bus Routes | ShuttlEd">
+    <meta property="og:description"
+        content="View all Lothian Bus routes departing from or heading to King's Buildings, Edinburgh.">
+    <meta property="og:image" content="https://jack6228.github.io/Next-Shuttle-Bus/favicon/favicon.png">
+    <meta property="og:image:alt" content="ShuttlEd icon">
+    <meta property="og:site_name" content="ShuttlEd">
+    <meta property="og:locale" content="en_GB">
+
+    <!-- Twitter/X cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bus Routes | ShuttlEd">
+    <meta name="twitter:description"
+        content="View all Lothian Bus routes departing from or heading to King's Buildings, Edinburgh.">
+    <meta name="twitter:image" content="https://jack6228.github.io/Next-Shuttle-Bus/favicon/favicon.png">
+
+    <!-- Browser theme colors -->
+    <meta name="theme-color" content="#10b981" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+
+    <!-- Tailwind build output -->
+    <link rel="stylesheet" href="output.css">
+</head>
+
+<body
+    class="bg-zinc-50 text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+
+        <!-- Header -->
+        <header class="mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-8">
+            <a href="index.html"
+                class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 hover:underline mb-4 block">← Back to ShuttlEd</a>
+            <h1 class="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">Lothian Bus Routes to and from King's Buildings</h1>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">Missed the shuttle or need to find an alternative route? </p>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">Here are a range of Lothian buses to and from King's Buildings</p>
+        </header>
+        
+        <!-- Content Container -->
+        <div class="max-w-xl mx-auto space-y-10 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+    
+            <!-- Route Direction Toggle Bar -->
+            <div
+                class="mb-8 flex w-full rounded-xl border border-slate-200 bg-slate-900/5 p-1 shadow-sm backdrop-blur-sm dark:border-slate-700/60 dark:bg-slate-800/60 gap-1.5">
+                <button id="btnFromKB" type="button"
+                    class="flex flex-1 justify-center items-center gap-1.5 rounded-lg px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-all duration-200 bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-white">
+                    <span class="material-symbols-outlined text-base hidden sm:inline">north_east</span>
+                    <span>To Central</span>
+                </button>
+                <button id="btnToKB" type="button"
+                    class="flex flex-1 justify-center items-center gap-1.5 rounded-lg px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-all duration-200 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+                    <span class="material-symbols-outlined text-base opacity-60 hidden sm:inline">south_west</span>
+                    <span>To King's Buildings</span>
+                </button>
+            </div>
+
+            <!-- VIEW: FROM KING'S BUILDINGS -->
+            <div id="viewFromKB" class="space-y-10 max-w-md mx-auto">
+
+                <!-- Stop 1: King's Buildings -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    King's Buildings
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1">(On Campus -
+                                        by Murchison House)</span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#BC8B89] dark:text-[#BC8B89]">
+                                    9
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Clovenstone
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Potterrow, Chapel St
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Stop 2: Observatory Road -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    Observatory Road
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1">(By
+                                        Campus)</span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#BC8B89] dark:text-[#BC8B89]">
+                                    9
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Clovenstone
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Potterrow, Chapel St
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Stop 3: Rankin Drive -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    Rankin Drive
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1">(By
+                                        Campus)</span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#9CC872] dark:text-[#9CC872]">
+                                    12
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Gyle Centre
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Potterrow, Chapel St
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~30 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#8C1713] dark:text-[#8C1713]">
+                                    28
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Bellevue
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~30 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                    </ul>
+                </section>
+
+                <!-- Stop 4: Lady Road -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    Lady Road
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1">(By Cameron
+                                        Toll)</span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#DECE00] dark:text-[#DECE00]">
+                                    3
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Clovenstone
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#F29E94] dark:text-[#F29E94]">
+                                    7
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Newhaven
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#117032] dark:text-[#117032]">
+                                    8
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Muirhouse
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St
+                                        Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#AC8ABF] dark:text-[#AC8ABF]">
+                                    29
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Silverknowes
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St
+                                        Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 - 25 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#7B6A58] dark:text-[#7B6A58]">
+                                    31
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        East Craigs
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St
+                                        Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#355FAA] dark:text-[#355FAA]">
+                                    37
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Silverknowes
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St
+                                        Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 self-stretch flex flex-col items-center justify-center text-2xl leading-6 font-bold text-[#7B9CC0] dark:text-[#7B9CC0]">
+                                    <span>47</span>
+                                    <span>47B</span>
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Cammo
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Potterrow, Surgeon's Hall, St
+                                        Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <!-- <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#0C1436] dark:text-[#0C1436] bg-white">
+                                    N3
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Haymarket
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St
+                                        Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">10 mins</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </li> -->
+
+                        <!-- <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#0C1436] dark:text-[#0C1436] bg-white">
+                                    N31
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        City Centre
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Surgeon's Hall, St
+                                        Patrick Square
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">10 mins</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </li> -->
+
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- VIEW: TO KING'S BUILDINGS -->
+            <div id="viewToKB" class="space-y-10 max-w-md mx-auto hidden">
+                
+                <!-- Stop 1: Lady Road -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    Potterrow or Chapel Street
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1"></span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#BC8B89] dark:text-[#BC8B89]">
+                                    9
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        King's Buildings
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Observatory
+                                        Road, King's Buildings
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#9CC872] dark:text-[#9CC872]">
+                                    12
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Portobello
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Rankin Drive
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~30 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                    </ul>
+                </section>
+
+                <!-- Stop 2: Surgeons' Hall or St Patrick Square -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    Surgeons' Hall or St Patrick Square
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1"></span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#DECE00] dark:text-[#DECE00]">
+                                    3
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Mayfield
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 self-stretch flex flex-col items-center justify-center text-2xl leading-6 font-bold">
+                                    <span class="text-[#F29E94] dark:text-[#F29E94]">7</span>
+                                    <span class="text-[#117032] dark:text-[#117032]">8</span>
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Royal Infirmary
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15-20 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#AC8ABF] dark:text-[#AC8ABF]">
+                                    29
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Gorebridge
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 - 25 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#7B6A58] dark:text-[#7B6A58]">
+                                    31
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Bonnyrigg/Rosewell
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#355FAA] dark:text-[#355FAA]">
+                                    37
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Penicuik Deanburn/Easter Bush
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~15 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                        <!-- <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#0C1436] dark:text-[#0C1436] bg-white">
+                                    N3
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Gorebridge
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">10 mins</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </li> -->
+
+                        <!-- <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#0C1436] dark:text-[#0C1436] bg-white">
+                                    N31
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Bonnyrigg
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">10 mins</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </li> -->
+
+                    </ul>
+                </section>
+
+                <!-- Stop 4: Surgeons' Hall or St Patrick Square or Potterrow -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    Surgeons' Hall, St Patrick Square or Potterrow
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1"></span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 self-stretch flex flex-col items-center justify-center text-2xl leading-6 font-bold text-[#7B9CC0] dark:text-[#7B9CC0]">
+                                    <span>47</span>
+                                    <span>47B</span>
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Penicuik Ladywood
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Lady Road
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~20 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                    </ul>
+                </section>
+
+                <!-- Stop 3: Surgeons' Hall or Chapel Street -->
+                <section class="border-b border-dashed border-zinc-300 dark:border-zinc-800 pb-8">
+                    <div class="mb-5 flex items-center gap-4">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h2
+                                class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined text-indigo-400 dark:text-indigo-400">location_on</span>
+                                <span>
+                                    Surgeons' Hall or Chapel Street
+                                    <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400 ml-1"></span>
+                                </span>
+                            </h2>
+                        </div>
+                        <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-indigo-400 dark:text-indigo-400 hover:underline shrink-0 self-center">
+                            Directions to Stop ↗
+                        </a> -->
+                    </div>
+
+                    <ul class="space-y-4">
+
+                        <li>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 shrink-0 text-center text-3xl font-bold text-[#8C1713] dark:text-[#8C1713]">
+                                    28
+                                </div>
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <h3 class="text-base font-semibold text-zinc-900 dark:text-white">
+                                        Bellevue
+                                    </h3>
+                                    <p class="text-xs text-zinc-700 dark:text-zinc-300 truncate">
+                                        <strong class="font-medium text-zinc-500 dark:text-zinc-400">Get off at
+                                        </strong>Rankin Drive
+                                    </p>
+                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                        Every <span class="font-medium text-zinc-700 dark:text-zinc-300">~30 mins</span>
+                                    </p>
+                                </div>
+                                <!-- <a href="https://www.google.com/maps/dir/?api=1&destination=Max+Born+Crescent+Bus+Stop+Edinburgh"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-indigo-200 dark:text-indigo-200 hover:underline shrink-0 self-center">
+                                    Full Route ↗
+                                </a> -->
+                            </div>
+                        </li>
+
+                    </ul>
+                </section>
+
+            </div>
+
+        <!-- Add simple footer for last updated -->
+         <footer class="mt-10 text-center text-xs text-zinc-500 dark:text-zinc-400">
+            <p>Last updated 22 September 2026</p>
+
+        </div>
+
+    </main>
+
+    <!-- Toggle Script -->
+    <script>
+        const btnFromKB = document.getElementById('btnFromKB');
+        const btnToKB = document.getElementById('btnToKB');
+        const viewFromKB = document.getElementById('viewFromKB');
+        const viewToKB = document.getElementById('viewToKB');
+
+        const activeClasses = ['bg-white', 'text-zinc-900', 'shadow-sm', 'dark:bg-zinc-800', 'dark:text-white'];
+        const inactiveClasses = ['text-zinc-500', 'hover:text-zinc-900', 'dark:text-zinc-400', 'dark:hover:text-white'];
+
+        // Optional visitor counter integration
+        (async function initVisitorCounters() {
+            const namespace = 'jack6228.github.io';
+            const totalKey = 'connecting-buses-total';
+            // Daily key resets automatically each day
+            const todayDate = new Date().toISOString().slice(0, 10);
+            const todayKey = `connecting-buses-${todayDate}`;
+            try {
+                // Increment total hits
+                const totalRes = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${totalKey}`);
+                const totalData = await totalRes.json();
+                // Increment today's hits
+                const todayRes = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${todayKey}`);
+                const todayData = await todayRes.json();
+            } catch (error) {
+                console.error('Failed to update visitor counts:', error);
+            }
+        })();
+
+        btnFromKB.addEventListener('click', () => {
+            // Activate From KB
+            btnFromKB.classList.add(...activeClasses);
+            btnFromKB.classList.remove(...inactiveClasses);
+            btnToKB.classList.add(...inactiveClasses);
+            btnToKB.classList.remove(...activeClasses);
+
+            // Show Content
+            viewFromKB.classList.remove('hidden');
+            viewToKB.classList.add('hidden');
+        });
+
+        btnToKB.addEventListener('click', () => {
+            // Activate To KB
+            btnToKB.classList.add(...activeClasses);
+            btnToKB.classList.remove(...inactiveClasses);
+            btnFromKB.classList.add(...inactiveClasses);
+            btnFromKB.classList.remove(...activeClasses);
+
+            // Show Content
+            viewToKB.classList.remove('hidden');
+            viewFromKB.classList.add('hidden');
+        });
+    </script>
+
+</body>
+
+</html>

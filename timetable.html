@@ -122,6 +122,25 @@
         document.addEventListener('DOMContentLoaded', () => {
                 const now = new Date();
 
+                // Optional visitor counter integration
+                (async function initVisitorCounters() {
+                    const namespace = 'jack6228.github.io';
+                    const totalKey = 'timetable-total';
+                    // Daily key resets automatically each day
+                    const todayDate = new Date().toISOString().slice(0, 10);
+                    const todayKey = `timetable-${todayDate}`;
+                    try {
+                        // Increment total hits
+                        const totalRes = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${totalKey}`);
+                        const totalData = await totalRes.json();
+                        // Increment today's hits
+                        const todayRes = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${todayKey}`);
+                        const todayData = await todayRes.json();
+                    } catch (error) {
+                        console.error('Failed to update visitor counts:', error);
+                    }
+                })();
+
                 // Debugging: set custom date for testing
                 // const now = new Date('2026-10-13T14:30:00'); // Example: Oct 15, 2026, 2:30 PM
 
